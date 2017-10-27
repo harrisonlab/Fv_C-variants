@@ -3,28 +3,27 @@ vs a reference wild-type assembly.
 
 
 
-<!--
+
 
 # 1. Alignment of Pcac raw reads vs the 414 genome
 
 Alignment of reads from a single run:
 
 ```bash
-  Reference=$(ls repeat_masked/P.cactorum/414_v2/filtered_contigs_repmask/414_v2_contigs_unmasked.fa)
-  for StrainPath in $(ls -d qc_dna/paired/P.*/* | grep -w -v -e '10300' -e '404' -e '414' -e '415' -e '416' -e 'PC13_15' -e '2003_3' | grep -e 'P.cactorum' -e 'P.idaei' | grep '4040'); do
-    ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/assemblers/spades
+  Reference=$(ls ../fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+  for StrainPath in $(ls -d ../qc_dna/paired/F.venenatum/* | grep -v 'Strain1'); do
     Strain=$(echo $StrainPath | rev | cut -f1 -d '/' | rev)
     Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
     F_Read=$(ls $StrainPath/F/*_trim.fq.gz)
     R_Read=$(ls $StrainPath/R/*_trim.fq.gz)
     echo $F_Read
     echo $R_Read
-    OutDir=analysis/genome_alignment/bowtie/$Organism/$Strain/vs_414
-    ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment
-    qsub $ProgDir/bowtie/sub_bowtie.sh $Reference $F_Read $R_Read $OutDir
+    OutDir=analysis/genome_alignment/bwa/$Organism/$Strain/vs_Fv_illumina
+    ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment/bwa
+    qsub $ProgDir/sub_bwa.sh $Strain $Reference $F_Read $R_Read $OutDir
   done
 ```
-
+<!--
 Alignment of reads from multiple sequencing runs:
 
 For isolates with two runs of data:
