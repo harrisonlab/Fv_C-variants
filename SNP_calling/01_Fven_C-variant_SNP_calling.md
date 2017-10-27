@@ -2,9 +2,6 @@ This document details commands used for SNP calling in F. venenatum C-variants
 vs a reference wild-type assembly.
 
 
-
-
-
 # 1. Alignment of Pcac raw reads vs the 414 genome
 
 Alignment of reads from a single run:
@@ -16,13 +13,18 @@ Alignment of reads from a single run:
     Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
     F_Read=$(ls $StrainPath/F/*_trim.fq.gz)
     R_Read=$(ls $StrainPath/R/*_trim.fq.gz)
+    echo "$Organism - $Strain"
     echo $F_Read
     echo $R_Read
-    OutDir=analysis/genome_alignment/bwa/$Organism/$Strain/vs_Fv_illumina
-    ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment/bwa
-    qsub $ProgDir/sub_bwa.sh $Strain $Reference $F_Read $R_Read $OutDir
+    OutDir=alignment/bwa/$Organism/$Strain/vs_Fv_illumina
+    ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment
+    qsub $ProgDir/bowtie/sub_bowtie.sh $Reference $F_Read $R_Read $OutDir
+    # OutDir=alignment/bwa/$Organism/$Strain/vs_Fv_illumina
+    # ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment/bwa
+    # qsub $ProgDir/sub_bwa.sh $Strain $Reference $F_Read $R_Read $OutDir
   done
 ```
+
 <!--
 Alignment of reads from multiple sequencing runs:
 
@@ -45,7 +47,7 @@ For isolates with two runs of data:
     echo $R1_Read
     echo $F2_Read
     echo $R2_Read
-    OutDir=analysis/genome_alignment/bowtie/$Organism/$Strain/vs_414
+    OutDir=alignment/bowtie/$Organism/$Strain/vs_414
     ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment
     qsub $ProgDir/bowtie/sub_bowtie_2lib.sh $Reference $F1_Read $R1_Read $F2_Read $R2_Read $OutDir
   done
@@ -74,7 +76,7 @@ for isolates with three runs of data:
       echo $R2_Read
       echo $F3_Read
       echo $R3_Read
-      OutDir=analysis/genome_alignment/bowtie/$Organism/$Strain/vs_414
+      OutDir=alignment/bowtie/$Organism/$Strain/vs_414
       ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment
       qsub $ProgDir/bowtie/sub_bowtie_3lib.sh $Reference $F1_Read $R1_Read $F2_Read $R2_Read $F3_Read $R3_Read $OutDir
     done
@@ -87,7 +89,7 @@ for isolates with three runs of data:
 ## 2.1 Rename input mapping files in each folder by prefixing with the strain ID
 
 ```bash
-  for File in $(ls analysis/genome_alignment/bowtie/*/*/vs_414/414_v2_contigs_unmasked.fa_aligned.sam | grep -v '10300' | grep '4040'); do
+  for File in $(ls alignment/bowtie/*/*/vs_414/414_v2_contigs_unmasked.fa_aligned.sam | grep -v '10300' | grep '4040'); do
     Strain=$(echo $File | rev | cut -f3 -d '/' | rev)
     Organism=$(echo $File | rev | cut -f4 -d '/' | rev)
     echo $Strain
