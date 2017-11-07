@@ -6,9 +6,9 @@ vs a reference wild-type assembly.
 
 Alignment of reads from a single run:
 
-```bash
+ ```bash
   Reference=$(ls ../fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
-  for StrainPath in $(ls -d ../qc_dna/paired/F.venenatum/* | grep -v 'Strain1'); do
+  for StrainPath in $(ls -d ../fusarium_venenatum/qc_dna/paired/F.venenatum/* | grep -v 'strain1'| grep -v 'WT'); do
     Strain=$(echo $StrainPath | rev | cut -f1 -d '/' | rev)
     Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
     F_Read=$(ls $StrainPath/F/*_trim.fq.gz)
@@ -16,7 +16,7 @@ Alignment of reads from a single run:
     echo "$Organism - $Strain"
     echo $F_Read
     echo $R_Read
-    OutDir=alignment/bwa/$Organism/$Strain/vs_Fv_illumina
+    OutDir=alignment/bowtie/$Organism/$Strain/vs_Fv_illumina
     ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment
     qsub $ProgDir/bowtie/sub_bowtie.sh $Reference $F_Read $R_Read $OutDir
     # OutDir=alignment/bwa/$Organism/$Strain/vs_Fv_illumina
@@ -24,72 +24,13 @@ Alignment of reads from a single run:
     # qsub $ProgDir/sub_bwa.sh $Strain $Reference $F_Read $R_Read $OutDir
   done
 ```
-
-<!--
-Alignment of reads from multiple sequencing runs:
-
-For isolates with two runs of data:
-
-```bash
-  Reference=$(ls repeat_masked/P.cactorum/414_v2/filtered_contigs_repmask/414_v2_contigs_unmasked.fa)
-  for StrainPath in $(ls -d qc_dna/paired/P*/* | grep -e 'P.cactorum' -e 'P.idaei' | grep -w -e '2003_3' -e '415' -e '416' -e 'PC13_15'); do
-    echo $StrainPath
-    ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/assemblers/spades/multiple_libraries
-    Strain=$(echo $StrainPath | rev | cut -f1 -d '/' | rev)
-    Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
-    echo $Strain
-    echo $Organism
-    F1_Read=$(ls $StrainPath/F/*_trim.fq.gz | head -n1 | tail -n1);
-    R1_Read=$(ls $StrainPath/R/*_trim.fq.gz | head -n1 | tail -n1);
-    F2_Read=$(ls $StrainPath/F/*_trim.fq.gz | head -n2 | tail -n1);
-    R2_Read=$(ls $StrainPath/R/*_trim.fq.gz | head -n2 | tail -n1);
-    echo $F1_Read
-    echo $R1_Read
-    echo $F2_Read
-    echo $R2_Read
-    OutDir=alignment/bowtie/$Organism/$Strain/vs_414
-    ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment
-    qsub $ProgDir/bowtie/sub_bowtie_2lib.sh $Reference $F1_Read $R1_Read $F2_Read $R2_Read $OutDir
-  done
-```
-
-for isolates with three runs of data:
-
-```bash
-  Reference=$(ls repeat_masked/P.cactorum/414_v2/filtered_contigs_repmask/414_v2_contigs_unmasked.fa)
-  for StrainPath in $(ls -d qc_dna/paired/P*/* | grep -e 'P.cactorum' -e 'P.idaei' | grep -w -e '404' -e '414'); do
-      echo $StrainPath
-      ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/assemblers/spades/multiple_libraries
-      Strain=$(echo $StrainPath | rev | cut -f1 -d '/' | rev)
-      Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
-      echo $Strain
-      echo $Organism
-      F1_Read=$(ls $StrainPath/F/*_trim.fq.gz | head -n1 | tail -n1);
-      R1_Read=$(ls $StrainPath/R/*_trim.fq.gz | head -n1 | tail -n1);
-      F2_Read=$(ls $StrainPath/F/*_trim.fq.gz | head -n2 | tail -n1);
-      R2_Read=$(ls $StrainPath/R/*_trim.fq.gz | head -n2 | tail -n1);
-      F3_Read=$(ls $StrainPath/F/*_trim.fq.gz | head -n3 | tail -n1);
-      R3_Read=$(ls $StrainPath/R/*_trim.fq.gz | head -n3 | tail -n1);
-      echo $F1_Read
-      echo $R1_Read
-      echo $F2_Read
-      echo $R2_Read
-      echo $F3_Read
-      echo $R3_Read
-      OutDir=alignment/bowtie/$Organism/$Strain/vs_414
-      ProgDir=/home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment
-      qsub $ProgDir/bowtie/sub_bowtie_3lib.sh $Reference $F1_Read $R1_Read $F2_Read $R2_Read $F3_Read $R3_Read $OutDir
-    done
-```
-
-
 # 2. Pre SNP calling cleanup
 
 
 ## 2.1 Rename input mapping files in each folder by prefixing with the strain ID
 
 ```bash
-  for File in $(ls alignment/bowtie/*/*/vs_414/414_v2_contigs_unmasked.fa_aligned.sam | grep -v '10300' | grep '4040'); do
+  for File in $(ls alignment/bowtie/*/*/vs_Fv_illumina/WT_contigs_unmasked.fa_aligned.sam); do
     Strain=$(echo $File | rev | cut -f3 -d '/' | rev)
     Organism=$(echo $File | rev | cut -f4 -d '/' | rev)
     echo $Strain
@@ -98,7 +39,7 @@ for isolates with three runs of data:
     CurDir=$PWD
     mkdir -p $OutDir
     cd $OutDir
-    cp -s $CurDir/$File "$Strain"_vs_414_v2_aligned.sam
+    cp -s $CurDir/$File "$Strain"_vs_Fv_illumina_aligned.sam
     cd $CurDir
   done
 ```
@@ -109,17 +50,13 @@ Convention used:
 qsub $ProgDir/sub_pre_snp_calling.sh <INPUT SAM FILE> <SAMPLE_ID>
 
 ```bash
-  for Sam in $(ls $PWD/analysis/popgen/*/*/*_vs_414_v2_aligned.sam | grep -v '10300' | tail -n+2); do
+ for Sam in $(ls analysis/popgen/*/*/*_vs_Fv_illumina_aligned.sam); do
     Strain=$(echo $Sam | rev | cut -f2 -d '/' | rev)
     Organism=$(echo $Sam | rev | cut -f3 -d '/' | rev)
-    CurDir=$PWD
-    OutDir=$(dirname $Sam)
-    cd $OutDir
-    ProgDir=/home/armita/git_repos/emr_repos/scripts/popgen/snp
+    ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
     qsub $ProgDir/sub_pre_snp_calling.sh $Sam $Strain
-    cd $CurDir
   done
-```
+ ``` 
 
 
 # 3. Run SNP calling
@@ -128,15 +65,26 @@ qsub $ProgDir/sub_pre_snp_calling.sh <INPUT SAM FILE> <SAMPLE_ID>
 
 ##Prepare genome reference indexes required by GATK
 
+Firstly, a local version of the assembly was made in this project directory:
+
 ```bash
-Reference=$(ls repeat_masked/P.cactorum/414_v2/filtered_contigs_repmask/414_v2_contigs_unmasked.fa)
+Reference=$(ls ../fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+OutDir=repeat_masked/F.venenatum/WT/illumina_assembly_ncbi
+mkdir -p $OutDir
+cp $Reference $OutDir/.
+```
+Then the local assembly was indexed:
+
+```bash
+Reference=$(ls repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
 OutDir=$(dirname $Reference)
 mkdir -p $OutDir
 ProgDir=/home/sobczm/bin/picard-tools-2.5.0
-java -jar $ProgDir/picard.jar CreateSequenceDictionary R=$Reference O=$OutDir/414_v2_contigs_unmasked.dict
+java -jar $ProgDir/picard.jar CreateSequenceDictionary R=$Reference O=$OutDir/WT_contigs_unmasked.dict
 samtools faidx $Reference
 ```
 
+<!-- 
 ###Copy index file to same folder as BAM alignments
 
 Move to the directory where the output of SNP calling should be placed. Then
@@ -175,8 +123,8 @@ qsub $ProgDir/sub_vcf_parser.sh $Vcf 40 30 10 30 1 Y
 ```bash
 mv 414_v2_contigs_unmasked_filtered.vcf analysis/popgen/SNP_calling/414_v2_contigs_unmasked_filtered.vcf
 ```
-
-
+ -->
+<!-- 
 ## Remove sequencing errors from vcf files:
 
 ```bash
@@ -194,6 +142,7 @@ echo "These have been removed from the vcf file"
 ```
   7
 ```
+ -->
 
 <!--
 In some organisms, may want to thin (subsample) SNPs in high linkage diseqilibrium down to
@@ -203,7 +152,7 @@ VcfTools=/home/sobczm/bin/vcftools/bin
 $VcfTools/vcftools --vcf $input_vcf --thin 10000 --recode --out ${input_vcf%.vcf}_thinned
 ```
 -->
-
+<!--
 ## Collect VCF stats
 
 General VCF stats (remember that vcftools needs to have the PERL library exported)
