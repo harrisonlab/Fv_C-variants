@@ -2,7 +2,7 @@ This document details commands used for SNP calling in F. venenatum C-variants
 vs a reference wild-type assembly.
 
 
-# 1. Alignment of Pcac raw reads vs the 414 genome
+# 1. Alignemt of C variant reads vs WT genome 
 
 Alignment of reads from a single run:
 
