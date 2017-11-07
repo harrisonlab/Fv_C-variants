@@ -84,7 +84,7 @@ java -jar $ProgDir/picard.jar CreateSequenceDictionary R=$Reference O=$OutDir/WT
 samtools faidx $Reference
 ```
 
-<!-- 
+
 ###Copy index file to same folder as BAM alignments
 
 Move to the directory where the output of SNP calling should be placed. Then
@@ -98,11 +98,11 @@ CurDir=$PWD
 OutDir=analysis/popgen/SNP_calling
 mkdir -p $OutDir
 cd $OutDir
-ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+ProgDir=/home/connellj/git_repos/scripts/Fv_C-variants/SNP_calling
 qsub $ProgDir/sub_SNP_calling_multithreaded.sh
 cd $CurDir
 ```
-
+<!-- 
 ## Filter SNPs based on this region being present in all isolates
 
 Only retain biallelic high-quality SNPS with no missing data (for any individual) for genetic analyses below (in some cases, may allow some missing data in order to retain more SNPs, or first remove poorly sequenced individuals with too much missing data and then filter the SNPs).
