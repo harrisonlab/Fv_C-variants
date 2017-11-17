@@ -85,7 +85,7 @@ samtools faidx $Reference
 ```
 
 
-###Copy index file to same folder as BAM alignments
+###Submit SNP calling 
 
 Move to the directory where the output of SNP calling should be placed. Then
 Start SNP calling with GATK.
@@ -102,14 +102,14 @@ ProgDir=/home/connellj/git_repos/scripts/Fv_C-variants/SNP_calling
 qsub $ProgDir/sub_SNP_calling_multithreaded.sh
 cd $CurDir
 ```
-<!-- 
+
 ## Filter SNPs based on this region being present in all isolates
 
 Only retain biallelic high-quality SNPS with no missing data (for any individual) for genetic analyses below (in some cases, may allow some missing data in order to retain more SNPs, or first remove poorly sequenced individuals with too much missing data and then filter the SNPs).
 
 ```bash
-cp analysis/popgen/SNP_calling/414_v2_contigs_unmasked_temp.vcf analysis/popgen/SNP_calling/414_v2_contigs_unmasked.vcf
-Vcf=$(ls analysis/popgen/SNP_calling/414_v2_contigs_unmasked.vcf)
+cp analysis/popgen/SNP_calling/WT_contigs_unmasked_temp.vcf analysis/popgen/SNP_calling/WT_contigs_unmasked.vcf
+Vcf=$(ls analysis/popgen/SNP_calling/WT_contigs_unmasked.vcf)
 ProgDir=/home/armita/git_repos/emr_repos/scripts/popgen/snp
 # mq=40
 # qual=30
@@ -121,9 +121,9 @@ qsub $ProgDir/sub_vcf_parser.sh $Vcf 40 30 10 30 1 Y
 ```
 
 ```bash
-mv 414_v2_contigs_unmasked_filtered.vcf analysis/popgen/SNP_calling/414_v2_contigs_unmasked_filtered.vcf
+mv WT_contigs_unmasked_filtered.vcf analysis/popgen/SNP_calling/WT_contigs_unmasked_filtered.vcf
 ```
- -->
+
 <!-- 
 ## Remove sequencing errors from vcf files:
 
@@ -152,7 +152,7 @@ VcfTools=/home/sobczm/bin/vcftools/bin
 $VcfTools/vcftools --vcf $input_vcf --thin 10000 --recode --out ${input_vcf%.vcf}_thinned
 ```
 -->
-<!--
+
 ## Collect VCF stats
 
 General VCF stats (remember that vcftools needs to have the PERL library exported)
@@ -173,7 +173,7 @@ Calculate the index for percentage of shared SNP alleles between the individuals
       $ProgDir/similarity_percentage.py $Vcf
   done
 ```
-
+<!-- 
 # Visualise the output as heatmap and clustering dendrogram
 ```bash
 for Log in $(ls analysis/popgen/SNP_calling/*distance.log); do
@@ -228,7 +228,7 @@ for Vcf in $(ls analysis/popgen/SNP_calling/*_no_missing.recode.vcf); do
 done
 ```
 
-
+ -->
 
 # Identify SNPs in gene models:
 
