@@ -54,3 +54,46 @@ qsub $ProgDir/sub_pre_snp_calling.sh <INPUT SAM FILE> <SAMPLE_ID>
     qsub $ProgDir/sub_pre_snp_calling.sh $Sam $Strain
   done
  ``` 
+
+ # 3. Run SNP calling
+
+#Runs a SNP calling script from Maria in order to be able to draw up a phylogeny
+
+##Prepare genome reference indexes required by GATK
+
+Firstly, a local version of the assembly was made in this project directory:
+
+```bash
+Reference=$(ls ../fusarium_venenatum/repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
+OutDir=repeat_masked/F.venenatum/WT_minion/minion_submission
+mkdir -p $OutDir
+cp $Reference $OutDir/.
+```
+Then the local assembly was indexed:
+
+```bash
+Reference=$(ls repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
+OutDir=$(dirname $Reference)
+mkdir -p $OutDir
+ProgDir=/home/sobczm/bin/picard-tools-2.5.0
+java -jar $ProgDir/picard.jar CreateSequenceDictionary R=$Reference O=$OutDir/WT_albacore_v2_contigs_unmasked.dict
+samtools faidx $Reference
+```
+
+###Submit SNP calling 
+
+Move to the directory where the output of SNP calling should be placed. Then
+Start SNP calling with GATK.
+The submission script required need to be custom-prepared for each analysis,
+depending on what samples are being analysed. See inside the submission script
+below:
+
+```bash
+CurDir=$PWD
+OutDir=analysis/popgen/SNP_calling_MINion
+mkdir -p $OutDir
+cd $OutDir
+ProgDir=/home/connellj/git_repos/scripts/Fv_C-variants/SNP_calling
+qsub $ProgDir/sub_SNP_calling_multithreaded_MINion.sh
+cd $CurDir
+```
