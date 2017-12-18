@@ -88,12 +88,15 @@ The submission script required need to be custom-prepared for each analysis,
 depending on what samples are being analysed. See inside the submission script
 below:
 
+
 ```bash
 CurDir=$PWD
 OutDir=analysis/popgen/SNP_calling_MINion
 mkdir -p $OutDir
 cd $OutDir
 ProgDir=/home/connellj/git_repos/scripts/Fv_C-variants/SNP_calling
-qsub $ProgDir/sub_SNP_calling_multithreaded_MINion.sh
+qsub $ProgDir/sub_SNP_calling_multithreaded_MINion.sh 
 cd $CurDir
 ```
+
+ 
