@@ -14,7 +14,7 @@
 # read group added) are to be used in SNP calling, use the -I argument with full path to each file following after that.
 # Each new BAM file has to be specified after a separate -I
 
-Project=/home/groups/harrisonlab/project_files/Fv_C-variants/repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
+Project=/home/groups/harrisonlab/project_files/Fv_C-variants
 OutDir=analysis/popgen/SNP_calling_MINion
 Reference=$(ls $Project/repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
 
