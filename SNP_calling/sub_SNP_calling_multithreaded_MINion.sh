@@ -22,7 +22,7 @@ RefName=$(basename "$Reference")
 Out1="${RefName%.*}_temp.vcf"
 Out2="${RefName%.*}.vcf"
 
-ProgDir=/home/sobczm/bin/GenomeAnalysisTK-3.6
+ProgDir=/home/connellj/sobczm_GenomeAnalysis
 
 java -jar $ProgDir/GenomeAnalysisTK.jar \
      -R $Reference \
