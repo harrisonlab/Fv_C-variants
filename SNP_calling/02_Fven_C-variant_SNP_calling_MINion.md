@@ -99,4 +99,23 @@ qsub $ProgDir/sub_SNP_calling_multithreaded_MINion.sh
 cd $CurDir
 ```
 
- 
+ ## Filter SNPs based on this region being present in all isolates
+
+Only retain biallelic high-quality SNPS with no missing data (for any individual) for genetic analyses below (in some cases, may allow some missing data in order to retain more SNPs, or first remove poorly sequenced individuals with too much missing data and then filter the SNPs).
+
+```bash
+cp analysis/popgen/SNP_calling_MINion/WT_albacore_v2_contigs_unmasked_temp.vcf analysis/popgen/SNP_calling_MINion/WT_albacore_v2_contigs_unmasked.vcf
+Vcf=$(ls analysis/popgen/SNP_calling_MINion/WT_albacore_v2_contigs_unmasked.vcf)
+ProgDir=/home/armita/git_repos/emr_repos/scripts/popgen/snp
+# mq=40
+# qual=30
+# dp=10
+# gq=30
+# na=0.95
+# removeindel=Y
+qsub $ProgDir/sub_vcf_parser.sh $Vcf 40 30 10 30 1 Y
+```
+
+```bash
+mv  WT_albacore_v2_contigs_unmasked.vcf analysis/popgen/SNP_calling_MINion/WT_albacore_v2_contigs_unmasked_filtered.vcf
+``
