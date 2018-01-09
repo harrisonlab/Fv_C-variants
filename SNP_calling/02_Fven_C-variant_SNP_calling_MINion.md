@@ -164,9 +164,11 @@ Fus2v1.0.genome : Fus2
 Bc16v1.0.genome: BC-16
 # P414 genome
 P414v1.0.genome: 414
-# Fv minion genome
-Fv_v1.0.genome : Fv_minion
+# Fv illumina genome
+Fv_v1.0.genome : Fv_illumina
+Fv_v2.0.genome : Fv_MINion
 ```
+
 
 Collect input files
 
@@ -174,12 +176,12 @@ Collect input files
 Reference=$(ls ../fusarium_venenatum/repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
 Gff=$(ls ../fusarium_venenatum/gene_pred/final/F.venenatum/WT/final/final_genes_appended_renamed.gff3)
 SnpEff=/home/sobczm/bin/snpEff
-mkdir $SnpEff/data/Fv_v1.0
-cp $Reference $SnpEff/data/Fv_v1.0/sequences.fa
-cp $Gff $SnpEff/data/Fv_v1.0/genes.gff
+mkdir $SnpEff/data/Fv_v2.0
+cp $Reference $SnpEff/data/Fv_v2.0/sequences.fa
+cp $Gff $SnpEff/data/Fv_v2.0/genes.gff
 
 #Build database using GFF3 annotation
-java -jar $SnpEff/snpEff.jar build -gff3 -v Fv_v1.0
+java -jar $SnpEff/snpEff.jar build -gff3 -v Fv_v2.0
 
 
 
@@ -197,7 +199,7 @@ for a in $(ls analysis/popgen/SNP_calling_MINion/WT_albacore_v2_contigs_unmasked
     Prefix=${filename%.vcf}
     OutDir=$(ls -d analysis/popgen/SNP_calling_MINion)
     SnpEff=/home/sobczm/bin/snpEff
-    java -Xmx4g -jar $SnpEff/snpEff.jar -v -ud 0 Fv_v1.0 $a > $OutDir/"$Prefix"_annotated.vcf
+    java -Xmx4g -jar $SnpEff/snpEff.jar -v -ud 0 Fv_v2.0 $a > $OutDir/"$Prefix"_annotated.vcf
     mv snpEff_genes.txt $OutDir/snpEff_genes_"$Prefix".txt
     mv snpEff_summary.html $OutDir/snpEff_summary_"$Prefix".html
     # mv WT_albacore_v2_contigs_unmasked_filtered* $OutDir/.
