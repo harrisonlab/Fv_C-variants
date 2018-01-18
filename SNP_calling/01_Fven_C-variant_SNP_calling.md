@@ -124,14 +124,15 @@ qsub $ProgDir/sub_vcf_parser.sh $Vcf 40 30 10 30 1 Y
 mv WT_contigs_unmasked_filtered.vcf analysis/popgen/SNP_calling/WT_contigs_unmasked_filtered.vcf
 ```
 
-<!-- 
+<!--
+-- 
 ## Remove sequencing errors from vcf files:
 
 ```bash
-Vcf=$(ls analysis/popgen/SNP_calling/414_v2_contigs_unmasked_filtered.vcf)
+Vcf=$(ls analysis/popgen/SNP_calling_illumina/WT_contigs_unmasked_filtered.vcf)
 OutDir=$(dirname $Vcf)
-Errors=$OutDir/414_error_SNPs.tsv
-FilteredVcf=$OutDir/414_v2_contigs_unmasked_filtered_no_errors.vcf
+Errors=$OutDir/Fv_illumina_error_SNPs.tsv
+FilteredVcf=$OutDir/WT_contigs_unmasked_filtered_no_errors.vcf
 ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
 $ProgDir/flag_error_SNPs.py --inp_vcf $Vcf --ref_isolate 414 --errors $Errors --filtered $FilteredVcf
 echo "The number of probable errors from homozygous SNPs being called from reference illumina reads vs the reference assembly is:"
@@ -139,9 +140,7 @@ cat $Errors | wc -l
 echo "These have been removed from the vcf file"
 ```
 
-```
-  7
-```
+
  -->
 
 <!--
@@ -152,7 +151,7 @@ VcfTools=/home/sobczm/bin/vcftools/bin
 $VcfTools/vcftools --vcf $input_vcf --thin 10000 --recode --out ${input_vcf%.vcf}_thinned
 ```
 -->
-
+<!--
 ## Collect VCF stats
 
 General VCF stats (remember that vcftools needs to have the PERL library exported)
@@ -160,7 +159,7 @@ General VCF stats (remember that vcftools needs to have the PERL library exporte
 ```bash
   VcfTools=/home/sobczm/bin/vcftools/bin
   export PERL5LIB="$VcfTools:$PERL5LIB"
-  VcfFiltered=$(ls analysis/popgen/SNP_calling/414_v2_contigs_unmasked_filtered_no_errors.vcf)
+  VcfFiltered=$(ls analysis/popgen/SNP_calling_minion/414_v2_contigs_unmasked_filtered_no_errors.vcf)
   Stats=$(echo $VcfFiltered | sed 's/.vcf/.stat/g')
   perl $VcfTools/vcf-stats $VcfFiltered > $Stats
 ```
@@ -275,11 +274,11 @@ java -jar $SnpEff/snpEff.jar build -gff3 -v Fv_v1.0
 ```bash
 CurDir=/home/groups/harrisonlab/project_files/Fv_C-variants
 cd $CurDir
-for a in $(ls analysis/popgen/SNP_calling/WT_contigs_unmasked_filtered.vcf); do
+for a in $(ls analysis/popgen/SNP_calling_illumina/WT_contigs_unmasked_filtered.vcf); do
     echo $a
     filename=$(basename "$a")
     Prefix=${filename%.vcf}
-    OutDir=$(ls -d analysis/popgen/SNP_calling)
+    OutDir=$(ls -d analysis/popgen/SNP_calling_illumina)
     SnpEff=/home/sobczm/bin/snpEff
     java -Xmx4g -jar $SnpEff/snpEff.jar -v -ud 0 Fv_v1.0 $a > $OutDir/"$Prefix"_annotated.vcf
     mv snpEff_genes.txt $OutDir/snpEff_genes_"$Prefix".txt
@@ -311,3 +310,40 @@ for a in $(ls analysis/popgen/SNP_calling/WT_contigs_unmasked_filtered.vcf); do
 done
 ```
  -->
+
+# structural variant discovery:
+
+ lumpy and svaba are specifically geared toward identifying indels and structural variants and uses more lines of evidence that gatk. Also, GATK will detect only small indels, whereas lumpy can detect bigger structural variants.
+
+
+```bash
+CurDir=$PWD
+Reference=$(ls repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+for StrainPath in $(ls -d ../fusarium_venenatum/qc_dna/paired/F.venenatum/* | grep -v 'strain1'| grep -v 'WT'); do
+  Strain=$(echo $StrainPath | rev | cut -f1 -d '/' | rev)
+  Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
+  echo $Strain
+  echo $Organism
+    ReadsF=$(ls $StrainPath/F/*fq.gz)
+    ReadsR=$(ls $StrainPath/R/*fq.gz)
+    ConcatTmpDir=tmp_concat_dir
+    mkdir -p $ConcatTmpDir
+    ConcatF=$ConcatTmpDir/"$Strain"_F_reads.fq.gz
+    ConcatR=$ConcatTmpDir/"$Strain"_R_reads.fq.gz
+    cat $ReadsF > $ConcatF
+    cat $ReadsR > $ConcatR
+    OutDir=analysis/popgen/Fv_indel_calling/illumina_indel_calling
+    ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+    qsub $ProgDir/sub_prep_lumpy.sh $Strain $CurDir/$Reference $ConcatF $ConcatR $OutDir
+done
+```
+
+
+
+Prefix=Fven_svaba
+  Reference=$(ls repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+  AlignDir=analysis/popgen/Fv_indel_calling/illumina_indel_calling
+  OutDir=analysis/popgen/Fv_indel_calling/svaba
+  ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+  qsub $ProgDir/sub_svaba.sh $Prefix $Reference $AlignDir $OutDir
+
