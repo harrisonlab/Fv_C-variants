@@ -337,9 +337,6 @@ for StrainPath in $(ls -d ../fusarium_venenatum/qc_dna/paired/F.venenatum/* | gr
     qsub $ProgDir/sub_prep_lumpy.sh $Strain $CurDir/$Reference $ConcatF $ConcatR $OutDir
 done
 ```
-
-
-
 Prefix=Fven_svaba
   Reference=$(ls repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
   AlignDir=analysis/popgen/Fv_indel_calling/illumina_indel_calling
@@ -347,3 +344,13 @@ Prefix=Fven_svaba
   ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
   qsub $ProgDir/sub_svaba.sh $Prefix $Reference $AlignDir $OutDir
 
+Filter vcf files to remove low quality calls.
+Only retain biallelic high-quality SNPS with no missing data (for any individual) for genetic analyses below (in some cases, may allow some missing data in order to retain more SNPs, or first remove poorly sequenced individuals with too much missing data and then filter the SNPs).
+
+```bash
+# cp analysis/popgen/SNP_calling_illumina/WT_contigs_unmasked_temp.vcf analysis/popgen/SNP_calling_illumina/WT_contigs_unmasked.vcf
+for Vcf in $(ls analysis/popgen/Fv_indel_calling/svaba/Pcac_svaba_sv.svaba.*.vcf | grep -v -e 'unfiltered' -e 'filtered' -e 'no_errors'); do
+ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+qsub $ProgDir/sub_vcf_parser_only_indels.sh $Vcf 40 30 10 30 1
+done
+```
