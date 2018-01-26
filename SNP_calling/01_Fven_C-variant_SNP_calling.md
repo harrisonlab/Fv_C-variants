@@ -159,7 +159,7 @@ General VCF stats (remember that vcftools needs to have the PERL library exporte
 ```bash
   VcfTools=/home/sobczm/bin/vcftools/bin
   export PERL5LIB="$VcfTools:$PERL5LIB"
-  VcfFiltered=$(ls analysis/popgen/SNP_calling_minion/414_v2_contigs_unmasked_filtered_no_errors.vcf)
+  VcfFiltered=$(ls analysis/popgen/SNP_calling_illumina/WT_contigs_unmasked_filtered_gene.vcf)
   Stats=$(echo $VcfFiltered | sed 's/.vcf/.stat/g')
   perl $VcfTools/vcf-stats $VcfFiltered > $Stats
 ```
@@ -319,7 +319,7 @@ done
 ```bash
 CurDir=$PWD
 Reference=$(ls repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
-for StrainPath in $(ls -d ../fusarium_venenatum/qc_dna/paired/F.venenatum/* | grep -v 'strain1'| grep -v 'WT'); do
+for StrainPath in $(ls -d ../fusarium_venenatum/qc_dna/paired/F.venenatum/* | grep -v 'strain1'| grep -v 'WT' | grep -e 'C2'); do
   Strain=$(echo $StrainPath | rev | cut -f1 -d '/' | rev)
   Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
   echo $Strain
@@ -347,9 +347,10 @@ Prefix=Fven_svaba
 Filter vcf files to remove low quality calls.
 Only retain biallelic high-quality SNPS with no missing data (for any individual) for genetic analyses below (in some cases, may allow some missing data in order to retain more SNPs, or first remove poorly sequenced individuals with too much missing data and then filter the SNPs).
 
+
 ```bash
-# cp analysis/popgen/SNP_calling_illumina/WT_contigs_unmasked_temp.vcf analysis/popgen/SNP_calling_illumina/WT_contigs_unmasked.vcf
-for Vcf in $(ls analysis/popgen/Fv_indel_calling/svaba/Pcac_svaba_sv.svaba.*.vcf | grep -v -e 'unfiltered' -e 'filtered' -e 'no_errors'); do
+# cp analysis/popgen/Fv_indel_calling/svaba/Fven_svaba_sv.svaba.unfiltered.indel.vcf analysis/popgen/Fv_indel_calling/svaba/Fven_svaba_sv.svaba.filtered.indel.vcf
+for Vcf in $(ls analysis/popgen/Fv_indel_calling/svaba/Fven_svaba_sv.svaba.*.vcf | grep -v -e 'unfiltered' -e 'filtered' -e 'no_errors'); do
 ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
 qsub $ProgDir/sub_vcf_parser_only_indels.sh $Vcf 40 30 10 30 1
 done
