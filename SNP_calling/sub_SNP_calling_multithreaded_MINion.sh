@@ -1,9 +1,8 @@
 #$ -S /bin/bash
 #$ -cwd
-#$ -pe smp 24
+#$ -pe smp 16
 #$ -l virtual_free=1.25G
 #$ -l h=blacklace01.blacklace|blacklace02.blacklace|blacklace04.blacklace|blacklace05.blacklace|blacklace06.blacklace|blacklace07.blacklace|blacklace08.blacklace|blacklace09.blacklace|blacklace10.blacklace|blacklace12.blacklace
-
 # Testing parallelisation of GATk HaplotypeCaller - may crash. (It did not! Resulted in 2x speedup)
 # NOTE: this is a haploid organism. For diploid organism, change "ploidy" argument to 2.
 # Changes required in the script:
@@ -14,27 +13,27 @@
 # read group added) are to be used in SNP calling, use the -I argument with full path to each file following after that.
 # Each new BAM file has to be specified after a separate -I
 
-Project=../../../home/groups/harrisonlab/project_files/Fv_C-variants
-OutDir=Fusarium_venenatum/MINion_SNP_Calling
+Project=../../../../../home/groups/harrisonlab/project_files/Fv_C-variants
+OutDir=../../Fusarium_venenatum/MINion_SNP_Calling
 Reference=$(ls $Project/repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
-
+location=/data/scratch/connellj/Fusarium_venenatum/MINion_SNP_Calling/F.venenatum
 RefName=$(basename "$Reference")
 Out1="${RefName%.*}_temp.vcf"
 Out2="${RefName%.*}.vcf"
 
-ProgDir=../../../home/connellj/sobczm_GenomeAnalysis
+ProgDir=../../../../../home/connellj/sobczm_GenomeAnalysis
 java -jar $ProgDir/GenomeAnalysisTK.jar \
      -R $Reference \
      -T HaplotypeCaller \
      -ploidy 1 \
      -nct 24 \
      --allow_potentially_misencoded_quality_scores \
-     -I Fusarium_venenatum/MINion_SNP_Calling/F.venenatum/C1/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
-     -I Fusarium_venenatum/MINion_SNP_Calling/F.venenatum/C2/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
-     -I Fusarium_venenatum/MINion_SNP_Calling/F.venenatum/C3/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
-     -I Fusarium_venenatum/MINion_SNP_Calling/F.venenatum/C4/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
-     -I Fusarium_venenatum/MINion_SNP_Calling/F.venenatum/C5/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
-     -I Fusarium_venenatum/MINion_SNP_Calling/F.venenatum/C6/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
+     -I $location/C1/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
+     -I $location/C2/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
+     -I $location/C3/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
+     -I $location/C4/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
+     -I $location/C5/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
+     -I $location/C6/vs_Fv_minion/_nomulti_proper_sorted_nodup_rg.bam \
      -o $Out1
 
 #Break down complex SNPs into primitive ones with VariantsToAllelicPrimitives
