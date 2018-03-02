@@ -81,7 +81,7 @@ samtools faidx $Reference
 ```
 
 
-###Submit SNP calling (We are here)
+###Submit SNP calling 
 
 Move to the directory where the output of SNP calling should be placed. Then
 Start SNP calling with GATK.
@@ -94,7 +94,7 @@ CurDir=$PWD
 OutDir=Fusarium_venenatum/MINion_SNP_Calling
 mkdir -p $OutDir
 cd $OutDir
-ProgDir=../../../../../home/connellj/git_repos/scripts/Fv_C-variants
+ProgDir=../../../../../home/connellj/git_repos/scripts/Fv_C-variants/SNP_calling
 qsub $ProgDir/sub_SNP_calling_multithreaded_MINion.sh
 cd $CurDir
 ```
@@ -104,8 +104,8 @@ cd $CurDir
 Only retain biallelic high-quality SNPS with no missing data (for any individual) for genetic analyses below (in some cases, may allow some missing data in order to retain more SNPs, or first remove poorly sequenced individuals with too much missing data and then filter the SNPs).
 
 ```bash
-cp analysis/popgen/SNP_calling/WT_contigs_unmasked_temp.vcf analysis/popgen/SNP_calling/WT_contigs_unmasked.vcf
-Vcf=$(ls analysis/popgen/SNP_calling/WT_contigs_unmasked.vcf)
+cp Fusarium_venenatum/MINion_SNP_Calling/WT_albacore_v2_contigs_unmasked.vcf Fusarium_venenatum/MINion_SNP_Calling/WT_albacore_v2_contigs_unmasked.vcf
+Vcf=$(ls Fusarium_venenatum/MINion_SNP_Calling/WT_albacore_v2_contigs_unmasked.vcf)
 ProgDir=/home/armita/git_repos/emr_repos/scripts/popgen/snp
 # mq=40
 # qual=30
@@ -225,7 +225,7 @@ done
 
  -->
 
-# Identify SNPs in gene models:
+# Identify SNPs in gene models: (We are here)
 
 Create custom SnpEff genome database
 
