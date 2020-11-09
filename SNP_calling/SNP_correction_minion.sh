@@ -1,40 +1,47 @@
-This document details commands used for SNP calling in the Fusarium venenatum C variant genome from the WT MINION Genome 
+SNP Correction Minion
+In this script i am using C variants sequenced using Illumina run against the Minion WT Genome and then aligning them with WT Illumina reads ran agains the Illumina Genome to identify errors.   
 
-#All ran from /data/scratch/connellj
 
-# 1.0 Alignemt of C variant reads vs MINion WT genome 
-
- ```bash
+bash
   Reference=$(ls ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
-  for StrainPath in $(ls -d ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/qc_dna/paired/F.venenatum/* | grep -v 'strain1'| grep -v 'WT'); do
+  for StrainPath in $(ls -d ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/qc_dna/paired/F.venenatum/WT); do
+    echo $StrainPath
+    ProgDir=../../../home/armita/git_repos/emr_repos/tools/seq_tools/assemblers/spades/multiple_libraries
     Strain=$(echo $StrainPath | rev | cut -f1 -d '/' | rev)
     Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
-    F_Read=$(ls $StrainPath/F/*_trim.fq.gz)
-    R_Read=$(ls $StrainPath/R/*_trim.fq.gz)
-    echo "$Organism - $Strain"
-    echo $F_Read
-    echo $R_Read
-    OutDir=Fusarium_venenatum/MINion_SNP_Calling/$Organism/$Strain/vs_Fv_minion
+    echo $Strain
+    echo $Organism
+    F1_Read=$(ls $StrainPath/F/*_trim.fq.gz | head -n1 | tail -n1);
+    R1_Read=$(ls $StrainPath/R/*_trim.fq.gz | head -n1 | tail -n1);
+    F2_Read=$(ls $StrainPath/F/*_trim.fq.gz | head -n2 | tail -n1);
+    R2_Read=$(ls $StrainPath/R/*_trim.fq.gz | head -n2 | tail -n1);
+    F3_Read=$(ls $StrainPath/F/*_trim.fq.gz | head -n3 | tail -n1);
+    R3_Read=$(ls $StrainPath/R/*_trim.fq.gz | head -n3 | tail -n1);
+    echo $F1_Read
+    echo $R1_Read
+    echo $F2_Read
+    echo $R2_Read
+    echo $F3_Read
+    echo $R3_Read
+    OutDir=Fusarium_venenatum/F.venenatum/WT/minion_reference_check/reference_check/minion_alignment 
     ProgDir=../../../home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment
-    qsub $ProgDir/bowtie/sub_bowtie.sh $Reference $F_Read $R_Read $OutDir $Strain
-    # OutDir=Fusarium_venenatum/MINion_SNP_Calling/$Organism/$Strain/vs_Fv_minion
-    # ProgDir=../../../home/armita/git_repos/emr_repos/tools/seq_tools/genome_alignment/bwa
-    # qsub $ProgDir/sub_bwa.sh $Strain $Reference $F_Read $R_Read $OutDir
+    qsub $ProgDir/bowtie/sub_bowtie_3lib.sh $Reference $F1_Read $R1_Read $F2_Read $R2_Read $F3_Read $R3_Read $OutDir $Strain
   done
-```
+
+
 # 2.0 Rename input mapping files in each folder by prefixing with the strain ID
 
 ```bash
-  for File in $(ls Fusarium_venenatum/MINion_SNP_Calling/*/*/vs_Fv_minion/WT_albacore_v2_contigs_unmasked.fa_aligned_sorted.bam); do
+  for File in $(ls Fusarium_venenatum/*/*/*/refrence_check/minion_alignment/WT_albacore_v2_contigs_unmasked.fa_aligned_sorted.bam); do
     Strain=$(echo $File | rev | cut -f3 -d '/' | rev)
     Organism=$(echo $File | rev | cut -f4 -d '/' | rev)
     echo $Strain
     echo $Organism
-    OutDir=Fusarium_venenatum/$Organism/$Strain/vs_Fv_minion
+    OutDir=Fusarium_venenatum/F.venenatum/WT/minion_refrence_check/reference_check/minion_alignment
     CurDir=$PWD
     mkdir -p $OutDir
     cd $OutDir
-    cp -s $CurDir/$File "$Strain"_vs_Fv_illumina_aligned.bam
+    cp -s $CurDir/$File "$Strain"_contigs_unmasked.fa_aligned_sorted.bam
     cd $CurDir
   done
 ```
@@ -45,37 +52,36 @@ Convention used:
 qsub $ProgDir/sub_pre_snp_calling.sh <INPUT SAM FILE> <SAMPLE_ID>
 
 ```bash
- for bam in $(ls Fusarium_venenatum/MINion_SNP_Calling/*/*/vs_Fv_minion/WT_albacore_v2_contigs_unmasked.fa_aligned_sorted.bam); do
-    Strain=$(echo $Sam | rev | cut -f2 -d '/' | rev)
-    Organism=$(echo $Sam | rev | cut -f3 -d '/' | rev)
-    ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+
+```bash
+ for bam in $(ls /data/scratch/connellj/Fusarium_venenatum/F.venenatum/WT/minion_reference_check/reference_check/snp_calling_out/C1_albacore_v2_contigs_unmasked.fa_aligned_sorted_minion.bam); do
+    Strain=$(echo $bam | rev | cut -f3 -d '/' | rev)
+    Organism=$(echo $bam | rev | cut -f4 -d '/' | rev)
+    ProgDir=/home/connellj/git_repos/scripts/Fv_C-variants/SNP_calling
     qsub $ProgDir/sub_pre_snp_calling.sh $bam $Strain
   done
  ``` 
+ ``` 
 
-
-# 4.0 Run SNP calling ~~~~~~~~~~~~(We are here 6/4/18)
+# 4.0 Run SNP calling 
 
 #Runs a SNP calling script from Maria in order to be able to draw up a phylogeny
-
 ##Prepare genome reference indexes required by GATK
 
 Firstly, a local version of the assembly was made in this project directory:
 
 ```bash
-Reference=$(ls ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
-OutDir=Fusarium_venenatum/MINion_SNP_Calling/F.venenatum/WT/illumina_assembly_ncbi
-mkdir -p $OutDir
+Reference=$(ls /home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT_minion/minion_submission/WT_albacore_v2_contigs_unmasked.fa)
+OutDir=/data/scratch/connellj/Fusarium_venenatum/F.venenatum/WT/minion_reference_check/reference_check/snp_calling_out 
 cp $Reference $OutDir/.
 ```
 Then the local assembly was indexed:
 
 ```bash
-Reference=$(ls Fusarium_venenatum/MINion_SNP_Calling/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+Reference=$(ls /data/scratch/connellj/Fusarium_venenatum/F.venenatum/WT/minion_reference_check/reference_check/snp_calling_out/WT_albacore_v2_contigs_unmasked.fa)
 OutDir=$(dirname $Reference)
-mkdir -p $OutDir
 ProgDir=/home/sobczm/bin/picard-tools-2.5.0
-java -jar $ProgDir/picard.jar CreateSequenceDictionary R=$Reference O=$OutDir/WT_contigs_unmasked.dict
+java -jar $ProgDir/picard.jar CreateSequenceDictionary R=$Reference O=$OutDir/WT_albacore_v2_contigs_unmasked.dict
 samtools faidx $Reference
 ```
 
@@ -88,26 +94,23 @@ The submission script required need to be custom-prepared for each analysis,
 depending on what samples are being analysed. See inside the submission script
 below:
 
-```bash
+```bash                     
 CurDir=$PWD
-OutDir=/data/scratch/connellj/Fusarium_venenatum/MINion_SNP_Calling/
-mkdir -p $OutDir
+OutDir=$CurDir  
 cd $OutDir
-ProgDir=../../../../../home/connellj/git_repos/scripts/Fv_C-variants/SNP_calling/
-qsub $ProgDir/sub_SNP_calling_multithreaded_MINion.sh
+ProgDir=/home/connellj/git_repos/scripts/Fv_C-variants/SNP_calling
+qsub $ProgDir/sub_SNP_calling_ref_check_minion.sh
 cd $CurDir
-done
-``` 
-
+```
 
 ## Filter SNPs based on this region being present in all isolates
 
 Only retain biallelic high-quality SNPS with no missing data (for any individual) for genetic analyses below (in some cases, may allow some missing data in order to retain more SNPs, or first remove poorly sequenced individuals with too much missing data and then filter the SNPs).
 
 ```bash
-cp Fusarium_venenatum/MINion_SNP_Calling/C1/WT_albacore_v2_contigs_unmasked.vcf Fusarium_venenatum/MINion_SNP_Calling/C1/WT_albacore_v2_contigs_unmasked.vcf
-Vcf=$(ls Fusarium_venenatum/MINion_SNP_Calling/C1/WT_albacore_v2_contigs_unmasked.vcf)
-ProgDir=../../../../../home/armita/git_repos/emr_repos/scripts/popgen/snp
+cp Fusarium_venenatum/MINion_SNP_Calling/WT_albacore_v2_contigs_unmasked.vcf Fusarium_venenatum/MINion_SNP_Calling/WT_albacore_v2_contigs_unmasked.vcf
+Vcf=$(ls Fusarium_venenatum/MINion_SNP_Calling/WT_albacore_v2_contigs_unmasked.vcf)
+ProgDir=/home/armita/git_repos/emr_repos/scripts/popgen/snp
 # mq=40
 # qual=30
 # dp=10

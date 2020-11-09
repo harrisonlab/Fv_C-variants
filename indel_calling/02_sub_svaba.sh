@@ -1,9 +1,9 @@
 #!/bin/bash
 #$ -S /bin/bash
 #$ -cwd
-#$ -pe smp 12
-#$ -l virtual_free=1.0G
-#$ -l h=blacklace01.blacklace|blacklace02.blacklace|blacklace03.blacklace|blacklace04.blacklace|blacklace05.blacklace|blacklace06.blacklace|blacklace07.blacklace|blacklace08.blacklace|blacklace09.blacklace|blacklace10.blacklace|blacklace11.blacklace
+#$ -pe smp 16
+#$ -l virtual_free=5.9G
+#$ -l h=blacklace11.blacklace|blacklace1.blacklace|blacklace2.blacklace|blacklace3.blacklace|blacklace4.blacklace|blacklace5.blacklace|blacklace6.blacklace|blacklace7.blacklace|blacklace8.blacklace
 
 # # Prefix="PcacP414"
 # Prefix="Pi_SCRP370"

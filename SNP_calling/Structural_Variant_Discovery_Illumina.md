@@ -5,7 +5,7 @@
 
 ```bash
 CurDir=$PWD
-Reference=$(ls repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+Reference=$(ls /home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
 for StrainPath in $(ls -d ../fusarium_venenatum/qc_dna/paired/F.venenatum/* | grep -v 'strain1'| grep -v 'WT' | grep -e 'C2'); do
   Strain=$(echo $StrainPath | rev | cut -f1 -d '/' | rev)
   Organism=$(echo $StrainPath | rev | cut -f2 -d '/' | rev)
@@ -25,11 +25,52 @@ for StrainPath in $(ls -d ../fusarium_venenatum/qc_dna/paired/F.venenatum/* | gr
 done
 ```
 Prefix=Fven_svaba
-  Reference=$(ls repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
-  AlignDir=analysis/popgen/Fv_indel_calling/illumina_indel_calling
-  OutDir=analysis/popgen/Fv_indel_calling/svaba
+  Reference=$(ls ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+  AlignDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C1
+  OutDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C1
   ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
   qsub $ProgDir/sub_svaba.sh $Prefix $Reference $AlignDir $OutDir
+  done
+
+Prefix=Fven_svaba
+  Reference=$(ls ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+  AlignDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C2
+  OutDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C2
+  ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+  qsub $ProgDir/sub_svaba.sh $Prefix $Reference $AlignDir $OutDir
+  done
+
+  Prefix=Fven_svaba
+  Reference=$(ls ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+  AlignDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C3
+  OutDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C3
+  ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+  qsub $ProgDir/sub_svaba.sh $Prefix $Reference $AlignDir $OutDir
+  done
+
+  Prefix=Fven_svaba
+  Reference=$(ls ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+  AlignDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C4
+  OutDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C4
+  ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+  qsub $ProgDir/sub_svaba.sh $Prefix $Reference $AlignDir $OutDir
+  done
+
+  Prefix=Fven_svaba
+  Reference=$(ls ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+  AlignDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C5
+  OutDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C5
+  ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+  qsub $ProgDir/sub_svaba.sh $Prefix $Reference $AlignDir $OutDir
+  done
+
+  Prefix=Fven_svaba
+  Reference=$(ls ../../../home/groups/harrisonlab/project_files/fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
+  AlignDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C6
+  OutDir=Fusarium_venenatum/Illumina_indel_calling/indel_calling/Fv_indel_calling/illumina_indel_calling/C6
+  ProgDir=/home/armita/git_repos/emr_repos/scripts/phytophthora/Pcac_popgen
+  qsub $ProgDir/sub_svaba.sh $Prefix $Reference $AlignDir $OutDir
+
 
 Filter vcf files to remove low quality calls.
 Only retain biallelic high-quality SNPS with no missing data (for any individual) for genetic analyses below (in some cases, may allow some missing data in order to retain more SNPs, or first remove poorly sequenced individuals with too much missing data and then filter the SNPs).

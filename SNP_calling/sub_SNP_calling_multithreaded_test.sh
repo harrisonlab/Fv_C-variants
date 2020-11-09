@@ -14,9 +14,9 @@
 # read group added) are to be used in SNP calling, use the -I argument with full path to each file following after that.
 # Each new BAM file has to be specified after a separate -I
 
-Project=/home/groups/harrisonlab/project_files/Fv_C-variants/analysis/SNP_calling/new_c_variants
-OutDir=/home/groups/harrisonlab/project_files/Fv_C-variants/analysis/SNP_calling/
-Reference=$(ls /home/groups/harrisonlab/project_files/Fv_C-variants/analysis/SNP_calling/new_c_variants/C9/WT_contigs_unmasked.fa)
+Project=/data/scratch/connellj/Fusarium_venenatum/Illumina_indel_calling/indel_calling/sorted_c_variant
+OutDir=/data/scratch/connellj/Fusarium_venenatum/Illumina_indel_calling/indel_calling/sorted_c_variant
+Reference=$(ls /data/scratch/connellj/Fusarium_venenatum/Illumina_indel_calling/indel_calling/sorted_c_variant/WT_contigs_unmasked.fa)
 
 RefName=$(basename "$Reference")
 Out1="${RefName%.*}_temp.vcf"
@@ -31,8 +31,14 @@ java -jar $ProgDir/GenomeAnalysisTK.jar \
      -ploidy 1 \
      -nct 24 \
      --allow_potentially_misencoded_quality_scores \
-     -I $Project/C9/C9_contigs_unmasked.fa_aligned_sorted_nomulti_proper_sorted_nodup_rg.bam \
-     -I $Project/C15/C15_contigs_unmasked.fa_aligned_sorted_nomulti_proper_sorted_nodup_rg.bam \
+     -I $Project/C1_sorted.bam\
+     -I $Project/C2_sorted.bam\
+     -I $Project/C3_sorted.bam\
+     -I $Project/C4_sorted.bam\
+     -I $Project/C5_sorted.bam\
+     -I $Project/C6_sorted.bam\
+     -I $Project/C9_sorted.bam\
+     -I $Project/C15_sorted.bam\
      -o $Out1
 
 #Break down complex SNPs into primitive ones with VariantsToAllelicPrimitives

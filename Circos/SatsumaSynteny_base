@@ -1,0 +1,4 @@
+## SatsumaSynteny
+
+ ./SatsumaSynteny -t /home/connellj/local_illumina_Fv_genome/WT_contigs_unmasked.fa -q /home/connellj/Kim_venenatum_genome/Fusarium_venenatum_gca_900007375.ASM90000737v1.dna_rm.toplevel.fa -o /home/connellj/emr_ven_vs_kim_ven
+mkdir -p $OutDir
