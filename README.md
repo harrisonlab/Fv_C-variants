@@ -44,6 +44,6 @@ Adapters were trimmed from reads and quality checked using the following command
 
 
 
-# 2. SNP Calling
+# 2. SNP Calling pileup 
 
 Commands for SNP calling are detailed in the directory SNP_calling.
