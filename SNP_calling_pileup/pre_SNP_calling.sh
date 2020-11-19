@@ -22,7 +22,7 @@ filename=$(basename "$input_sam")
 name="${filename%.*}"
 
 
-WorkDir=/projects/fusarium_venenatum_miseq/${SLURM_JOB_USER}_${SLURM_JOBID}
+WorkDir=/projects/tmp/${SLURM_JOB_USER}_${SLURM_JOBID}
 mkdir -p $WorkDir
 ### Prep
 
@@ -57,7 +57,6 @@ java -jar $picard MarkDuplicates \
 	MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 \
 	VALIDATION_STRINGENCY=LENIENT \
 
-	echo $name
 
 ### Add group and sample name (prefix)
 java -jar $picard AddOrReplaceReadGroups \
@@ -72,7 +71,6 @@ java -jar $picard AddOrReplaceReadGroups \
 	RGPU=barcode \
 	VALIDATION_STRINGENCY=LENIENT \
 
-	echo $name
 
 samtools index $name\_nomulti\_proper\_sorted\_nodup_rg.bam
 
