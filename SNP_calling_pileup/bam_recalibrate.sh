@@ -47,7 +47,7 @@ java -jar $gatk/GenomeAnalysisTK.jar \
      -T PrintReads \
      -R WT_contigs_unmasked.fa \
      -I "$strain"_realigned.bam \
-     -BQSR "$strain"_recal.table
+     -BQSR "$strain"_recal.table \
      -o "$strain"_recal.bam 
 
 
