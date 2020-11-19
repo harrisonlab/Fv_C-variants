@@ -157,6 +157,16 @@ done
 
 
 
+
+
+
+
+
+
+
+
+
+
 # 3. Run SNP calling
 
 #Runs a SNP calling script from Maria in order to be able to draw up a phylogeny
