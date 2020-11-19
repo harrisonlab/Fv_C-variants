@@ -58,4 +58,4 @@ java -jar $gatk/GenomeAnalysisTK.jar \
 
 
 cp $WorkDir/"$strain"_recal.table $outdir
-#rm -r $WorkDir
+rm -r $WorkDir
