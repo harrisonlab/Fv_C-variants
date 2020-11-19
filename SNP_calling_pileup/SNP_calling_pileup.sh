@@ -140,7 +140,9 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
   done 
 done 
 
-#8.) Recalibrate bam files with recalibration table generated from previous step
+
+#8.) Recalibrate bam files with recalibration table generated from previous step         This is my next step
+
 
 Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa  
 for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
@@ -154,6 +156,24 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
   done 
 done 
 
+
+#9.) Next evaluate what data looks like after base recalibraton 
+
+
+Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa  
+KnownSNP=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/WT_contigs_unmasked_temp.vcf
+KnownINDEL=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/combined_lumpy_alignment/svaba/Fven_svaba_sv.svaba.unfiltered.indel.vcf
+KnownSV=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/combined_lumpy_alignment/svaba/unfiltered_sv/Fven_svaba_sv.svaba.unfiltered.sv.vcf
+for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
+  for input in ../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/corrected_bam/"$Strain"_realigned.bam; do
+    recalibration_tables=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate/"$Strain"_recal.table
+    echo $Strain
+    Outdir=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate
+    mkdir -p $Outdir
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
+    sbatch $ProgDir/base_recalibrator.sh $Reference $KnownSNP $KnownINDEL $KnownSV $Strain $input $recalibration_tables $Outdir
+  done 
+done 
 
 
 

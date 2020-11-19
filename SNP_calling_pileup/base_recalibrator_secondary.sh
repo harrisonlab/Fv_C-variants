@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH -J bam_recalibrator
+#SBATCH -J base_recalibrator_seconsary
 #SBATCH --partition=short
 #SBATCH --mem-per-cpu=12G
 #SBATCH --cpus-per-task=30
@@ -16,10 +16,13 @@
 #OUTPUT:
 # rearanged bam files prefixed with strain ID
 reference=$1
-strain=$2
-input_bam=$3
-recal_table=$4
-outdir=$5
+SNP=$2
+INDEL=$3
+SV=$4
+strain=$5
+input_bam=$6
+recal_table=$7
+outdir=$8
 
 
 WorkDir=/projects/fusarium_venenatum_miseq/${SLURM_JOB_USER}_${SLURM_JOBID}
@@ -27,6 +30,9 @@ mkdir -p $WorkDir
 
 
 cp $reference $WorkDir
+cp $SNP $WorkDir
+cp $INDEL $WorkDir
+cp $SV $WorkDir
 cp $input_bam $WorkDir
 cp $recal_table $WorkDir
 cd $WorkDir
@@ -44,12 +50,15 @@ java -jar $picard CreateSequenceDictionary \
 
 gatk=/scratch/software/GenomeAnalysisTK-3.6
 java -jar $gatk/GenomeAnalysisTK.jar \
-     -T PrintReads \
+     -T BaseRecalibrator \
      -R WT_contigs_unmasked.fa \
      -I "$strain"_realigned.bam \
+     -knownSites WT_contigs_unmasked_temp.vcf \
+     -knownSites Fven_svaba_sv.svaba.unfiltered.indel.vcf \
+     -knownSites Fven_svaba_sv.svaba.unfiltered.sv.vcf \
      -BQSR "$strain"_recal.table \
-     -o "$strain"_recal.bam 
+     -o "$strain"_secondary_recal.table 
 
 
-cp $WorkDir/"$strain"_recal.bam $outdir
+cp $WorkDir/"$strain"_secondary_recal.table $outdir
 rm -r $WorkDir
