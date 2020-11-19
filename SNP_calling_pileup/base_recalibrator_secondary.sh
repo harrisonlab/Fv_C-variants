@@ -11,8 +11,9 @@
 # 2nd argument: SNP call vcf for variant masking 
 # 3rd argument: indell call vcf for variant masking 
 # 4th argument: sv call vcf for masking 
-# 5nd argument: sample name (prefix) to be used to identify it in the future
-# 6rd argument: input BAM file from pre_snp_calling file with your mappings with duplicates marked no multimapping sorted  
+# 5th argument: sample name (prefix) to be used to identify it in the future
+# 6th argument: input BAM file from pre_snp_calling file with your mappings with duplicates marked no multimapping sorted  
+# 7th argument: input recal table generated from primary base recalibation
 #OUTPUT:
 # rearanged bam files prefixed with strain ID
 reference=$1
