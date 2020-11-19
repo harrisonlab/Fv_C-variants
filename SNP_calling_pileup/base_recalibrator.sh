@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -J base_recalibrator
-#SBATCH --partition=short
+#SBATCH --partition=himem
 #SBATCH --mem-per-cpu=12G
 #SBATCH --cpus-per-task=30
 

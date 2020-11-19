@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH -J bam_recalibrator
+#SBATCH -J variants_to_primatives
 #SBATCH --partition=himem
 #SBATCH --mem-per-cpu=12G
 #SBATCH --cpus-per-task=30
@@ -16,10 +16,8 @@
 #OUTPUT:
 # rearanged bam files prefixed with strain ID
 reference=$1
-strain=$2
-input_bam=$3
-recal_table=$4
-outdir=$5
+input_bam=$2
+outdir=$3
 
 
 WorkDir=/projects/fusarium_venenatum_miseq/${SLURM_JOB_USER}_${SLURM_JOBID}
@@ -28,12 +26,10 @@ mkdir -p $WorkDir
 
 cp $reference $WorkDir
 cp $input_bam $WorkDir
-cp $recal_table $WorkDir
 cd $WorkDir
 
 
 samtools faidx WT_contigs_unmasked.fa
-samtools index *_realigned.bam
 
 
 picard=/home/connellj/miniconda2/share/picard-2.18.29-0/picard.jar
@@ -44,12 +40,11 @@ java -jar $picard CreateSequenceDictionary \
 
 gatk=/scratch/software/GenomeAnalysisTK-3.6
 java -jar $gatk/GenomeAnalysisTK.jar \
-     -T PrintReads \
+     -T VariantsToAllelicPrimitives \
      -R WT_contigs_unmasked.fa \
-     -I "$strain"_realigned.bam \
-     -BQSR "$strain"_recal.table \
-     -o "$strain"_recal.bam 
+     -V WT_contigs_unmasked_temp.vcf \
+     -o corrected_snp.bam 
 
 
-cp $WorkDir/"$strain"_recal.bam $outdir
+cp $WorkDir/corrected_snp.bam $outdir
 rm -r $WorkDir
