@@ -175,7 +175,7 @@ done
 
 
 Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa  
-KnownSNP=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/WT_contigs_unmasked_temp.vcf
+KnownSNP=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/corrected_variants/corrected_snp.bam
 KnownINDEL=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/combined_lumpy_alignment/svaba/Fven_svaba_sv.svaba.unfiltered.indel.vcf
 KnownSV=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/combined_lumpy_alignment/svaba/unfiltered_sv/Fven_svaba_sv.svaba.unfiltered.sv.vcf
 for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do

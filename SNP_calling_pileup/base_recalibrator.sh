@@ -14,7 +14,9 @@
 # 5nd argument: sample name (prefix) to be used to identify it in the future
 # 6rd argument: input BAM file from pre_snp_calling file with your mappings with duplicates marked no multimapping sorted  
 #OUTPUT:
-# rearanged bam files prefixed with strain ID
+# Primary realibration table used later for plotting initial root mean square error 
+
+
 reference=$1
 SNP=$2
 INDEL=$3
@@ -51,7 +53,7 @@ java -jar $gatk/GenomeAnalysisTK.jar \
      -T BaseRecalibrator \
      -R WT_contigs_unmasked.fa \
      -I "$strain"_realigned.bam \
-     -knownSites corrected_snp.bam \
+     -knownSites corrected_snp.bamcd  \
      -knownSites Fven_svaba_sv.svaba.unfiltered.indel.vcf \
      -knownSites Fven_svaba_sv.svaba.unfiltered.sv.vcf \
      -o "$strain"_recal.table 

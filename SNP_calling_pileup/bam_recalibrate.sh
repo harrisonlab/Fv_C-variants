@@ -14,7 +14,9 @@
 # 5nd argument: sample name (prefix) to be used to identify it in the future
 # 6rd argument: input BAM file from pre_snp_calling file with your mappings with duplicates marked no multimapping sorted  
 #OUTPUT:
-# rearanged bam files prefixed with strain ID
+# Recalibrated bam based on realibration table generated from previous step
+
+
 reference=$1
 strain=$2
 input_bam=$3
