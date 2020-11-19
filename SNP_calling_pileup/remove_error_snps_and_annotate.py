@@ -6,10 +6,10 @@
 Constants
 from operator import itemgetter
 
-input_files = ["C1","C2","C3","C4","C5","C6"]
+input_files = ["File1","File2","File3"]
 input_file_location = "/data/scratch/connellj/Fusarium_venenatum/MINion_SNP_Calling/"
-output_file_name = "/data/scratch/connellj/Fusarium_venenatum/MINion_SNP_Calling/sliding_window_unfiltered_SNP_calling_1000bp_genome_prsence.csv"
-
+output_file_name = "/data/scratch/connellj/Fusarium_venenatum/MINion_SNP_Calling/true_variants.csv"
+error_SNPs = "/data/scratch/connellj/Fusarium_venenatum/F.venenatum/WT/minion_reference_check/reference_check/snp_calling_out/Error_snp/Minion_genome_SNPs.vcf"
 
 
 def function_count_SNP_incidence (c_unique, all_c_varients, window_size):
