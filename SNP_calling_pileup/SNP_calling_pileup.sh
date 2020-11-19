@@ -14,7 +14,7 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
     echo $R_Read
     echo $Outdir
     mkdir -p $Outdir
-    ProgDir=/home/gomeza/git_repos/scripts/bioinformatics_tools/SEQdata_qc
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
     sbatch $ProgDir/count_nucl.sh $F_Read $R_Read 37 $Outdir #Estimated genome size
  done
 done
@@ -35,7 +35,7 @@ for Cvarient in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C
     echo $R_Read
     OutDir=$StrainPath/alignment 
     mkdir -p $OutDir
-    ProgDir=/home/connellj/git_repos/emr_repos/tools/seq_tools/alignment_tools
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
     sbatch $ProgDir/bowtie.sh $Reference $F_Read $R_Read $OutDir
       Jobs=$(squeue -u ${USER} --noheader --array | wc -l)
          while [ $Jobs -gt 1 ]; do
@@ -86,7 +86,7 @@ done
   #  printf "\n"
     OutDir=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/compare
     mkdir -p $OutDir  
-    ProgDir=/home/connellj/git_repos/emr_repos/tools/seq_tools/SNP_calling
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
     sbatch $ProgDir/pre_SNP_calling.sh $input $Strain $OutDir 
     done
   done
@@ -101,7 +101,7 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
     echo $Strain
     Outdir=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/pre_indel_realignment
     mkdir -p $Outdir
-    ProgDir=/home/connellj/git_repos/emr_repos/tools/seq_tools/SNP_calling
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
     sbatch $ProgDir/pre_indel_realignment.sh $Reference $input $Strain $Outdir
   done 
 done     
@@ -117,7 +117,7 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
     echo $Strain
     Outdir=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/corrected_bam
     mkdir -p $Outdir
-    ProgDir=/home/connellj/git_repos/emr_repos/tools/seq_tools/SNP_calling
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
     sbatch $ProgDir/indel_realignment.sh $Reference $Strain $input $target_intervals $Outdir
   done 
 done  
