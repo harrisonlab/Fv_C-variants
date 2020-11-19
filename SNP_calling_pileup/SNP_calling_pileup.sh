@@ -54,7 +54,7 @@ done
 #3.) Rename input mapping files in each folder by prefixing with the strain ID. 
 
 
-for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19 ; do
+for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
   for filename in /projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment; do
    echo $Strain
      mv "$filename/WT_contigs_unmasked.fa_aligned.sam" "$filename/"$Strain"_unmasked.fa_aligned.sam"
@@ -123,7 +123,7 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
 done  
 
 
-
+#This is not a neccesary step in this pipeline only if VariantsToAllelicPrimatives wasnt run after haplotype caller 
 # Correct SNP file from previous GATK run Run variants to primatives (gatk package) on temp.vcf output from haplotype caller 
 
 
@@ -139,8 +139,6 @@ done
 
 #7.) Base recalibration is required to prevent systematic errors influencing base call features of snp callers. This step relies in having known snp and indel locations so these can be excluded from the scoring system
 
-
-RUN THIS AGAIN WITH THE NOT TEMP VCF 
 
 Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa  
 KnownSNP=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/corrected_variants/corrected_snp.bam
