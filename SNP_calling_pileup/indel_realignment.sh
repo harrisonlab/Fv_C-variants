@@ -12,7 +12,8 @@
 # 3rd argument: input BAM file from pre_snp_calling file with your mappings with duplicates marked no multimapping sorted 
 # 4th argument: target intervals required for indel rearangemenr 
 #OUTPUT:
-# rearanged bam files prefixed with strain ID
+# realigned bam files prefixed with strain ID
+
 reference=$1
 strain=$2
 input_bam=$3

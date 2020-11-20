@@ -11,6 +11,8 @@
 # 2nd argument: temp VCF from gatk 
 #OUTPUT:
 # rearanged bam files prefixed with strain ID
+
+
 reference=$1
 input_bam=$2
 outdir=$3

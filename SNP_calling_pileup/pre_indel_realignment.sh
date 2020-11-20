@@ -12,6 +12,8 @@
 # 3rd argument: sample name (prefix) to be used to identify bam in the future
 #OUTPUT:
 # realigner intervals to be used in the next stages of indel realignment 
+
+
 reference=$1
 input_bam=$2
 strain=$3
