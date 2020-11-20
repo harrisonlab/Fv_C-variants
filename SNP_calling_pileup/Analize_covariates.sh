@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 #SBATCH -J analize_covariates
-#SBATCH --partition=short
+#SBATCH --partition=himem
 #SBATCH --mem-per-cpu=12G
 #SBATCH --cpus-per-task=30
 
+#GATK Analyze covariats requires the following R dependencies: ggplot2, gplots, gsalib, reshape and readline. 
+#conda install -c r r-ggplot2
+#conda install -c r r-gplots
+#conda install -c bioconda r-gsalib
+#conda install -c r r-reshape
+#conda install -c conda-forge readline=6.2
 
 ##########################################################################
 #INPUT:
@@ -40,14 +46,21 @@ java -jar $picard CreateSequenceDictionary \
 	R=WT_contigs_unmasked.fa \
 	O=WT_contigs_unmasked.dict 
 
-
-gatk=/scratch/software/GenomeAnalysisTK-3.6
-java -jar $gatk/GenomeAnalysisTK.jar \
-     -T AnalyzeCovariates \
-     -"$strain"_recal.table \
-     -"$strain"_secondary_recal.table \
+gatk=/home/connellj/gatk4/gatk-4.1.9.0/gatk
+     $gatk AnalyzeCovariates \
+     -before "$strain"_recal.table \
+     -after "$strain"_secondary_recal.table \
      -plots "$strain"_recal_plots.pdf 
 
+#gatk=/scratch/software/GenomeAnalysisTK-3.6
+#java -jar $gatk/GenomeAnalysisTK.jar \
+#     -T AnalyzeCovariates \
+#     -R WT_contigs_unmasked.fa \
+#     -before "$strain"_recal.table \
+#     -after "$strain"_secondary_recal.table \
+#     -plots "$strain"_recal_plots.pdf
 
-cp $WorkDir/recal_plots.pdf $outdir
-rm -r $WorkDir
+
+
+cp $WorkDir/"$strain"_recal_plots.pdf $outdir
+#rm -r $WorkDir

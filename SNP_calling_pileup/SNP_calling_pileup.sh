@@ -194,7 +194,7 @@ done
 
 
 Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa  
-for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
+for Strain in C1; do
     primary_recalibration_table=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate/"$Strain"_recal.table
     secondary_recalibration_table=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate_secondary/"$Strain"_secondary_recal.table
     echo $Strain
@@ -217,9 +217,7 @@ done
 
 
 
-
-
-
+"
 
 
 
