@@ -1,7 +1,7 @@
 #This document details commands used for SNP calling pileup in F. venenatum C-variants vs a reference wild-type assembly.
 
 
-
+  
 #1.) First the genome coverage of those variants intended to be used in the anlysis was analysed and those with <30x coverage are excluded. 
 
 
@@ -190,10 +190,40 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
 done 
 
 
-  
+ #10.) Create recalibration plots for before and after recalibration tables to show improved root mean square error of bases         
+
+
+Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa  
+for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
+    primary_recalibration_table=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate/"$Strain"_recal.table
+    secondary_recalibration_table=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate_secondary/"$Strain"_secondary_recal.table
+    echo $Strain
+    Outdir=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/recalibration_plots
+    mkdir -p $Outdir
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
+    sbatch $ProgDir/Analize_covariates.sh $Reference $Strain $primary_recalibration_table $secondary_recalibration_table $Outdir
+done 
 
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
