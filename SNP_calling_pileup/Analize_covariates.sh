@@ -4,12 +4,12 @@
 #SBATCH --mem-per-cpu=12G
 #SBATCH --cpus-per-task=30
 
-#GATK Analyze covariats requires the following R dependencies: ggplot2, gplots, gsalib, reshape and readline. 
+#GATK Analyze covariats requires the following R dependencies: ggplot2, gplots, gsalib, reshape. 
 #conda install -c r r-ggplot2
 #conda install -c r r-gplots
 #conda install -c bioconda r-gsalib
 #conda install -c r r-reshape
-#conda install -c conda-forge readline=6.2
+#MISSING PACKAGE libreadline.so.6 WONT RUN 
 
 ##########################################################################
 #INPUT:
