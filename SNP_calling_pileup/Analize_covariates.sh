@@ -9,7 +9,7 @@
 #conda install -c r r-gplots
 #conda install -c bioconda r-gsalib
 #conda install -c r r-reshape
-#MISSING PACKAGE libreadline.so.6 WONT RUN 
+#MISSING PACKAGE libreadline.so.6 WONT RUN. Output only .csv aand plot manually in R using "https://github.com/broadgsa/gatk/blob/6ba57d05eb20101517d8888f999d6d1f564d2aeb/public/gatk-tools-public/src/main/resources/org/broadinstitute/gatk/utils/recalibration/BQSR.R"
 
 ##########################################################################
 #INPUT:
@@ -50,7 +50,8 @@ gatk=/home/connellj/gatk4/gatk-4.1.9.0/gatk
      $gatk AnalyzeCovariates \
      -before "$strain"_recal.table \
      -after "$strain"_secondary_recal.table \
-     -plots "$strain"_recal_plots.pdf 
+     -csv "$strain"_recal_plot.csv
+#     -plots "$strain"_recal_plots.pdf 
 
 #gatk=/scratch/software/GenomeAnalysisTK-3.6
 #java -jar $gatk/GenomeAnalysisTK.jar \
@@ -62,5 +63,6 @@ gatk=/home/connellj/gatk4/gatk-4.1.9.0/gatk
 
 
 
-cp $WorkDir/"$strain"_recal_plots.pdf $outdir
+#cp $WorkDir/"$strain"_recal_plots.pdf $outdir
+cp $WorkDir/"$strain"_recal_plot.csv $outdir
 #rm -r $WorkDir

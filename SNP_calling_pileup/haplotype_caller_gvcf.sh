@@ -44,12 +44,12 @@ java -jar $gatk/GenomeAnalysisTK.jar \
      -T HaplotypeCaller \
      -R WT_contigs_unmasked.fa \
      -I "$strain"_recal.bam \
-     -o "$strain"_SNP_calls.vcf \
+     -o "$strain"_SNP_calls.g.vcf \
      -ERC GVCF \
      -variant_index_type LINEAR \
      -variant_index_parameter 128000
 
  
 
-cp $WorkDir/"$strain"_SNP_calls.vcf $outdir
+cp $WorkDir/"$strain"_SNP_calls.g.vcf $outdir
 rm -r $WorkDir

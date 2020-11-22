@@ -194,7 +194,7 @@ done
 
 
 Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa  
-for Strain in C1; do
+for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
     primary_recalibration_table=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate/"$Strain"_recal.table
     secondary_recalibration_table=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate_secondary/"$Strain"_secondary_recal.table
     echo $Strain
@@ -218,3 +218,30 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
     sbatch $ProgDir/haplotype_caller_gvcf.sh $Reference $Strain $input $Outdir
   done 
 done  
+
+
+
+#12. Copy vcf files to a single directory to make the GenotypeGVCF simpler.   
+
+
+for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
+  for filename in /projects/fusarium_venenatum_miseq/SNP_calling; do
+   echo $Strain
+     cp "$filename/F.venenatum/$Strain/alignment/nomulti/SNP_call/"$Strain"_SNP_calls.g.vcf" "$filename"/pileup_calls
+     cp /projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.dict /"$filename"/pileup_calls
+     cp /projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa /"$filename"/pileup_calls
+     cp /projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa.fai /"$filename"/pileup_calls
+  done 
+done 
+
+
+
+#12.) Combine.vcf files from haplotype caller using GenogypeGVCF and filter only biallelic SNPs. 
+
+
+ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
+sbatch $ProgDir/genotype_gvcf.sh 
+
+   
+
+#13.)

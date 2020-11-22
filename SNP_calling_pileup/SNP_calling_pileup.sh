@@ -194,7 +194,7 @@ done
 
 
 Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa  
-for Strain in C1; do
+for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
     primary_recalibration_table=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate/"$Strain"_recal.table
     secondary_recalibration_table=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/$Strain/alignment/nomulti/base_recalibrate_secondary/"$Strain"_secondary_recal.table
     echo $Strain
@@ -221,6 +221,30 @@ done
 
 
 
+#12. Copy vcf files to a single directory to make the GenotypeGVCF simpler.   
+
+
+for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19; do
+  for filename in /projects/fusarium_venenatum_miseq/SNP_calling; do
+   echo $Strain
+     cp "$filename/F.venenatum/$Strain/alignment/nomulti/SNP_call/"$Strain"_SNP_calls.g.vcf" "$filename"/pileup_calls
+     cp /projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.dict /"$filename"/pileup_calls
+     cp /projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa /"$filename"/pileup_calls
+     cp /projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa.fai /"$filename"/pileup_calls
+  done 
+done 
+
+
+
+#12.) Combine.vcf files from haplotype caller using GenogypeGVCF and filter only biallelic SNPs. 
+
+
+ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
+sbatch $ProgDir/genotype_gvcf.sh 
+
+   
+
+#13.)
 
 
 
@@ -243,58 +267,10 @@ done
 
 
 
-# 3. Run SNP calling
-
-#Runs a SNP calling script from Maria in order to be able to draw up a phylogeny
-
-##Prepare genome reference indexes required by GATK
-
- # Firstly, a local version of the assembly was made in this project directory:
-
-#```bash
-#Reference=$(ls ../fusarium_venenatum/repeat_masked/F.venenatum/WT/illumina_assembly_ncbi/WT_contigs_unmasked.fa)
-#OutDir=repeat_masked/F.venenatum/WT/illumina_assembly_ncbi
-#mkdir -p $OutDir
-#cp $Reference $OutDir/.
-#```
-#Then the local assembly was indexed:
-
-#```bash
-Reference=$(ls WT_contigs_unmasked.fa)
-OutDir=$(dirname $Reference)
-#mkdir -p $OutDir
-ProgDir=/projects/oldhome/sobczm/bin/picard-tools-2.5.0
-java -jar $ProgDir/picard.jar CreateSequenceDictionary R=$Reference O=$OutDir/WT_contigs_unmasked.dict
-samtools faidx $Reference
-#```
-
-
-###Submit SNP calling 
-
-#Move to the directory where the output of SNP calling should be placed. Then
-#Start SNP calling with GATK.
-#The submission script required need to be custom-prepared for each analysis,
-#depending on what samples are being analysed. See inside the submission script
-#below:
-
-
-
-#Submit snp calling with this 
-
-ProgDir=/home/connellj/git_repos/emr_repos/tools/seq_tools/SNP_calling
-sbatch $ProgDir/GATK_SNP_calling_l.sh
 
 
 
 
-
-#```bash
-#snp_calling_output=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out
-#=#mkdir -p $snp_calling_output
-#cd $snp_calling_output
-#ProgDir=/home/connellj/git_repos/emr_repos/tools/seq_tools/SNP_calling
-#sbatch $ProgDir/GATK_SNP_calling.sh
-#```
 
 ## Filter SNPs based on this region being present in all isolates
 
