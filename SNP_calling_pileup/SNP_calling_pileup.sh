@@ -236,7 +236,7 @@ done
 
 
 
-#12.) Combine.vcf files from haplotype caller using GenogypeGVCF and filter only biallelic SNPs. 
+#13.) Combine.vcf files from haplotype caller using GenogypeGVCF and filter only biallelic SNPs. 
 
 
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
@@ -244,7 +244,101 @@ sbatch $ProgDir/genotype_gvcf.sh
 
    
 
-#13.)
+#14.) Annotate VCF file 
+
+# Create custom SnpEff genome database
+
+```bash
+SnpEff=/projects/oldhome/sobczm/bin/snpEff
+nano $SnpEff/snpEff.config
+```
+
+
+# Add the following lines to the section with databases:
+
+```
+#---
+# EMR Databases
+#----
+# Fus2 genome
+Fus2v1.0.genome : Fus2
+# Bc16 genome
+Bc16v1.0.genome: BC-16
+# P414 genome
+P414v1.0.genome: 414
+# Fv illumina genome
+Fv_v1.0.genome : Fv_illumina
+```
+
+#C ollect input files
+
+```bash
+Reference=$(ls /projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa)
+Gff=$(ls /projects/fusarium_venenatum_miseq/gene_prediction/final_genes_appended_renamed.gff3)
+SnpEff=/projects/oldhome/sobczm/bin/snpEff
+mkdir $SnpEff/data/Fv_v1.0
+cp $Reference $SnpEff/data/Fv_v1.0/sequences.fa
+cp $Gff $SnpEff/data/Fv_v1.0/genes.gff
+
+#Build database using GFF3 annotation
+java -jar $SnpEff/snpEff.jar build -gff3 -v Fv_v1.0
+```
+ 
+
+## Annotate VCF files
+```bash
+CurDir=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out
+cd $CurDir
+for a in $(ls /projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/WT_contigs_unmaskedSNPs_filtered.vcf); do
+    echo $a
+    filename=$(basename "$a")
+    Prefix=${filename%.vcf}
+    OutDir=$(ls -d /projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls)
+    SnpEff=/projects/oldhome/sobczm/bin/snpEff
+    java -Xmx4g -jar $SnpEff/snpEff.jar -v -ud 0 Fv_v1.0 $a > $OutDir/"$Prefix"_annotated.vcf
+    mv snpEff_genes.txt $OutDir/snpEff_genes_"$Prefix".txt
+    mv snpEff_summary.html $OutDir/snpEff_summary_"$Prefix".html
+done
+   
+    # mv WT_contigs_unmasked_filtered* $OutDir/.
+    #-
+    #Create subsamples of SNPs containing those in a given category
+    #-
+    #genic (includes 5', 3' UTRs)
+    java -jar $SnpEff/SnpSift.jar filter "(ANN[*].EFFECT has 'missense_variant') || (ANN[*].EFFECT has 'nonsense_variant') || (ANN[*].EFFECT has 'synonymous_variant') || (ANN[*].EFFECT has 'intron_variant') || (ANN[*].EFFECT has '5_prime_UTR_variant') || (ANN[*].EFFECT has '3_prime_UTR_variant')" $OutDir/"$Prefix"_annotated.vcf > 
+    #coding
+    java -jar $SnpEff/SnpSift.jar filter "(ANN[0].EFFECT has 'missense_variant') || (ANN[0].EFFECT has 'nonsense_variant') || (ANN[0].EFFECT has 'synonymous_variant')" $OutDir/"$Prefix"_annotated.vcf > $OutDir/"$Prefix"_coding.vcf
+    #non-synonymous
+    java -jar $SnpEff/SnpSift.jar filter "(ANN[0].EFFECT has 'missense_variant') || (ANN[0].EFFECT has 'nonsense_variant')" $OutDir/"$Prefix"_annotated.vcf > $OutDir/"$Prefix"_nonsyn.vcf
+    #synonymous
+    java -jar $SnpEff/SnpSift.jar filter "(ANN[0].EFFECT has 'synonymous_variant')" $OutDir/"$Prefix"_annotated.vcf > $OutDir/"$Prefix"_syn.vcf
+    #Four-fold degenrate sites (output file suffix: 4fd)
+    ProgDir=/projects/oldhome/sobczm/bin/popgen/summary_stats
+    python $ProgDir/parse_snpeff_synonymous.py $OutDir/"$Prefix"_syn.vcf
+    AllSnps=$(cat $OutDir/"$Prefix"_annotated.vcf | grep -v '#' | wc -l)
+    GeneSnps=$(cat $OutDir/"$Prefix"_gene.vcf | grep -v '#' | wc -l)
+    CdsSnps=$(cat $OutDir/"$Prefix"_coding.vcf | grep -v '#' | wc -l)
+    NonsynSnps=$(cat $OutDir/"$Prefix"_nonsyn.vcf | grep -v '#' | wc -l)
+    SynSnps=$(cat $OutDir/"$Prefix"_syn.vcf | grep -v '#' | wc -l)
+    printf "Comparison\$AllSnps\tGeneSnps\tCdsSnps\tSynSnps\tNonsynSnps\n"
+    printf "$Prefix\t$AllSnps\t$GeneSnps\t$CdsSnps\t$SynSnps\t$NonsynSnps\n"
+
+
+# WT_contigs_unmaskedSNPs_filtered        385     0       96      43      53
+
+#Pipeline complete 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -381,82 +475,7 @@ qsub $ProgDir/sub_vcf_parser.sh $Vcf 40 30 10 30 1 Y
 
 # Identify SNPs in gene models:
 
-Create custom SnpEff genome database
 
-```bash
-SnpEff=/projects/oldhome/sobczm/bin/snpEff
-nano $SnpEff/snpEff.config
-```
-
-
-Add the following lines to the section with databases:
-
-```
-#---
-# EMR Databases
-#----
-# Fus2 genome
-Fus2v1.0.genome : Fus2
-# Bc16 genome
-Bc16v1.0.genome: BC-16
-# P414 genome
-P414v1.0.genome: 414
-# Fv illumina genome
-Fv_v1.0.genome : Fv_illumina
-```
-
-Collect input files
-
-```bash
-Reference=$(ls /projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa)
-Gff=$(ls /projects/fusarium_venenatum_miseq/gene_prediction/final_genes_appended_renamed.gff3)
-SnpEff=/projects/oldhome/sobczm/bin/snpEff
-mkdir $SnpEff/data/Fv_v1.0
-cp $Reference $SnpEff/data/Fv_v1.0/sequences.fa
-cp $Gff $SnpEff/data/Fv_v1.0/genes.gff
-
-#Build database using GFF3 annotation
-java -jar $SnpEff/snpEff.jar build -gff3 -v Fv_v1.0
-```
- 
-
-## Annotate VCF files
-```bash
-CurDir=../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out
-cd $CurDir
-for a in $(ls /projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/WT_contigs_unmasked_temp.vcf); do
-    echo $a
-    filename=$(basename "$a")
-    Prefix=${filename%.vcf}
-    OutDir=$(ls -d /projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/)
-    SnpEff=/projects/oldhome/sobczm/bin/snpEff
-    java -Xmx4g -jar $SnpEff/snpEff.jar -v -ud 0 Fv_v1.0 $a > $OutDir/"$Prefix"_annotated.vcf
-    mv snpEff_genes.txt $OutDir/snpEff_genes_"$Prefix".txt
-    mv snpEff_summary.html $OutDir/snpEff_summary_"$Prefix".html
-
-   
-    # mv WT_contigs_unmasked_filtered* $OutDir/.
-    #-
-    #Create subsamples of SNPs containing those in a given category
-    #-
-    #genic (includes 5', 3' UTRs)
-    java -jar $SnpEff/SnpSift.jar filter "(ANN[*].EFFECT has 'missense_variant') || (ANN[*].EFFECT has 'nonsense_variant') || (ANN[*].EFFECT has 'synonymous_variant') || (ANN[*].EFFECT has 'intron_variant') || (ANN[*].EFFECT has '5_prime_UTR_variant') || (ANN[*].EFFECT has '3_prime_UTR_variant')" $OutDir/"$Prefix"_annotated.vcf > 
-    #coding
-    java -jar $SnpEff/SnpSift.jar filter "(ANN[0].EFFECT has 'missense_variant') || (ANN[0].EFFECT has 'nonsense_variant') || (ANN[0].EFFECT has 'synonymous_variant')" $OutDir/"$Prefix"_annotated.vcf > $OutDir/"$Prefix"_coding.vcf
-    #non-synonymous
-    java -jar $SnpEff/SnpSift.jar filter "(ANN[0].EFFECT has 'missense_variant') || (ANN[0].EFFECT has 'nonsense_variant')" $OutDir/"$Prefix"_annotated.vcf > $OutDir/"$Prefix"_nonsyn.vcf
-    #synonymous
-    java -jar $SnpEff/SnpSift.jar filter "(ANN[0].EFFECT has 'synonymous_variant')" $OutDir/"$Prefix"_annotated.vcf > $OutDir/"$Prefix"_syn.vcf
-    #Four-fold degenrate sites (output file suffix: 4fd)
-    ProgDir=/projects/oldhome/sobczm/bin/popgen/summary_stats
-    python $ProgDir/parse_snpeff_synonymous.py $OutDir/"$Prefix"_syn.vcf
-    AllSnps=$(cat $OutDir/"$Prefix"_annotated.vcf | grep -v '#' | wc -l)
-    GeneSnps=$(cat $OutDir/"$Prefix"_gene.vcf | grep -v '#' | wc -l)
-    CdsSnps=$(cat $OutDir/"$Prefix"_coding.vcf | grep -v '#' | wc -l)
-    NonsynSnps=$(cat $OutDir/"$Prefix"_nonsyn.vcf | grep -v '#' | wc -l)
-    SynSnps=$(cat $OutDir/"$Prefix"_syn.vcf | grep -v '#' | wc -l)
-    printf "Comparison\$AllSnps\tGeneSnps\tCdsSnps\tSynSnps\tNonsynSnps\n"
-    printf "$Prefix\t$AllSnps\t$GeneSnps\t$CdsSnps\t$SynSnps\t$NonsynSnps\n"
 
 
 done
