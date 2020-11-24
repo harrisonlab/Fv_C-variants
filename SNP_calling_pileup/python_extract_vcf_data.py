@@ -6,8 +6,8 @@ from operator import itemgetter
 import csv
 
 
-input_file_location_1 = "/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/WT_contigs_unmaskedSNPs_filtered_annotated.vcf"
-output_file_location_1 = "/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/SNP_filtered_data_python.csv"
+input_file_location_1 = "/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/WT_contigs_unmaskedSNPs_filtered_nonsyn.vcf"
+output_file_location_1 = "/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/non_synon_SNPS_python.csv"
 
 
 file_in_1 = open (input_file_location_1, "r")
@@ -78,8 +78,8 @@ import csv
 
 
 
-input_file_location_1 = "/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/SNP_filtered_data_python.csv"
-output_file_location_1 = "/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/SNP_filtered_data_corrected_python.csv"
+input_file_location_1 = "/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/non_synon_SNPS_python.csv"
+output_file_location_1 = "/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/non_synon_SNPS.tsv"
 
 
 file_in_1 = open (input_file_location_1, "r")
@@ -109,7 +109,7 @@ for line_1 in lines_1:
 		ref.append (line_1 [2])
 		snp.append (line_1 [3])
 		qual.append (line_1 [0])
-		gene.append (line_1 [30])
+		gene.append (line_1 [31])
 
 
 header_1 = "Quality_Score"

@@ -204,6 +204,18 @@ for Strain in C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19
     sbatch $ProgDir/Analize_covariates.sh $Reference $Strain $primary_recalibration_table $secondary_recalibration_table $Outdir
 done 
 
+#################################################Run from command line ##########################################################
+#Running Analize_covariates was unssuccessful due to package instalation errors so to run from command line do \ 
+#1) conda install -c conda-forge r-base
+#2.) BQSR.R is the name of the script you want to run.
+#3.) C1_recal_plot.csv is the name of the original csv file output from AnalyzeCovariates.
+#4.) C1_recal.table is your original recalibration file.
+#5.) C1.pdf is the output pdf file; you can name it whatever you want.
+#6.) Place Rscript, in and out file in location, and run Rscript command line from there
+
+/home/connellj/miniconda2/bin/Rscript BQSR.R C1_recal_plot.csv C1_recal.table C1.pdf 
+
+
 
 #11.) Submit bam files for SNP calling with haplotype caller in gvcf module. Here Bam files are SNP called independantly. 
 
