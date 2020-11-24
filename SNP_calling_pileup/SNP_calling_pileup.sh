@@ -212,7 +212,7 @@ done
 #2.) BQSR.R is the name of the script you want to run.
 #3.) C1_recal_plot.csv is the name of the original csv file output from AnalyzeCovariates.
 #4.) C1_recal.table is your original recalibration file.
-#5.) C1.pdf is the output pdf file; you can name it whatever you want.
+#5.) C1.pdf is the output pdf file.
 #6.) Place Rscript, in and out file in location, and run Rscript command line from there
 
 /home/connellj/miniconda2/bin/Rscript BQSR.R C1_recal_plot.csv C1_recal.table C1.pdf 

@@ -82,25 +82,25 @@ for(cov in levels(data$CovariateName)) {    # for each covariate in turn
       ylab("Quality Score Accuracy") +
       blankTheme
     if(cov == "Cycle") {
-      b <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="maroon1","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType) +
+      b <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="red 1","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType) +
         theme(axis.text.x=element_text(angle=90, hjust=0))
       
       p <- ggplot(d, aes(x=CovariateValue,y=AverageReportedQuality,alpha=log10(Observations))) +
         xlab(paste(cov,"Covariate")) +
         ylab("Mean Quality Score") + ylim(0,max(42,d$AverageReportedQuality)) +
         blankTheme
-      e <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="maroon1","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType) +
+      e <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="red 1","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType) +
         theme(axis.text.x=element_text(angle=90, hjust=0))
       
       
     } else {
-      c <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="maroon1","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType) +
+      c <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="red 1","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType) +
         theme(axis.text.x=element_text(angle=90, hjust=0)) + xlab(paste(cov,"Covariate (3 base suffix)"))
       p <- ggplot(d, aes(x=CovariateValue,y=AverageReportedQuality,alpha=log10(Observations))) +
         xlab(paste(cov,"Covariate (3 base suffix)")) +
         ylab("Mean Quality Score") +
         blankTheme
-      f <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="maroon1","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType) +
+      f <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="red","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType) +
         theme(axis.text.x=element_text(angle=90, hjust=0))
       
     }
@@ -110,14 +110,14 @@ for(cov in levels(data$CovariateName)) {    # for each covariate in turn
       xlab("Reported Quality Score") +
       ylab("Empirical Quality Score") +
       blankTheme
-    a <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="maroon1","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType)
+    a <- p + geom_point(aes(color=Recalibration)) + scale_color_manual(values=c("BEFORE"="red","AFTER"="blue","BQSR"="black")) + facet_grid(.~EventType)
     
     p <- ggplot(d, aes(x=CovariateValue)) +
       xlab(paste(cov,"Covariate")) +
       ylab("No. of Observations (area normalized)") +
       blankTheme
     d <- p + geom_histogram(aes(fill=Recalibration,weight=Observations,y=..ndensity..),alpha=0.6,binwidth=1,position="identity")
-    d <- d + scale_fill_manual(values=c("BEFORE"="maroon1","AFTER"="blue","BQSR"="black"))
+    d <- d + scale_fill_manual(values=c("BEFORE"="red","AFTER"="blue","BQSR"="black"))
     d <- d + facet_grid(.~EventType) 
     #    d <- d + scale_y_continuous(formatter="comma")
   }
