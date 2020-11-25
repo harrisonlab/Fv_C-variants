@@ -38,7 +38,7 @@ gunzip $Read_R
 Sub1=*R1*.fq
 Sub2=*R2*.fq
 
-/data/scratch/gomeza/prog/count_nucl.pl -i $Sub1 -i $Sub2 -g $3 > estimated_coverage.log
+/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup/count_nucl.pl -i $Sub1 -i $Sub2 -g $3 > estimated_coverage.log
 
 cp -r $WorkDir/estimated_coverage.log $CurDir/$OutDir/.
 rm -r $WorkDir
