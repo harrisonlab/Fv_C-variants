@@ -336,9 +336,36 @@ done
     SynSnps=$(cat $OutDir/"$Prefix"_syn.vcf | grep -v '#' | wc -l)
     printf "Comparison\$AllSnps\tGeneSnps\tCdsSnps\tSynSnps\tNonsynSnps\n"
     printf "$Prefix\t$AllSnps\t$GeneSnps\t$CdsSnps\t$SynSnps\t$NonsynSnps\n"
-
-
 # WT_contigs_unmaskedSNPs_filtered        385     0       96      43      53
 
-#Pipeline complete 
 
+#15.) Create txt file with bases for each of the identified genes. 
+
+
+faidx -d '|' final_genes_appended_renamed.gene.fasta $(tr '\n' ' ' < count_coding_region_snps.txt ) > non_synonomous_genes.fasta
+
+
+#16.) Blast genes
+
+
+for Assembly in $(ls ../../projects/fusarium_venenatum/gene_pred/codingquarry/F.venenatum/WT_minion/final/final_genes_appended_renamed.cdna.fasta); do # Use files with nucleotides   minion genes 
+  Strain=$(echo $Assembly| rev | cut -d '/' -f4 | rev)
+  Organism=$(echo $Assembly | rev | cut -d '/' -f5 | rev)
+  echo "$Organism - $Strain"
+  Query=../../projects/fusarium_venenatum_miseq/gene_prediction/non_synonomous_genes.fasta
+  ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
+  sbatch $ProgDir/blast_pipe.sh $Query dna $Assembly
+done
+
+
+
+#17.) Variant recalibration step is required to build a model of what true genetic variaton looks like
+
+
+Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa 
+for input in ../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/WT_contigs_unmasked_temp.vcf; do
+  Outdir=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/corrected_variants
+  mkdir -p $Outdir 
+  ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
+  sbatch $ProgDir/variant_recalibrate.sh $Reference $input $Outdir
+done 
