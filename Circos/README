@@ -1,10 +1,12 @@
 #Script to create circos plots. 
+#1.) First create txt files for genomes and concatenate
+#2.) Create synteny links between genomes using satsuma synteny 
+#3.) Create circos config file used for building ideogram.  
 
 
 #1.) Create a .txt file with contig lengths of the genomes to be aligned. 
 #.txt file for genome 1 
  
-
 Genome1=$(ls ../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa)
 OutDir=/home/connellj/Circos 
 mkdir -p $OutDir
