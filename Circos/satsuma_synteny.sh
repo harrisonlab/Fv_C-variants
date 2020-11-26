@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH -J satsumasynteny
-#SBATCH --partition=short
-#SBATCH --mem-per-cpu=6G
-#SBATCH --cpus-per-task=10
+#SBATCH --partition=himem
+#SBATCH --mem-per-cpu=12G
+#SBATCH --cpus-per-task=30
 
 ##########################################################################
 #INPUT:
@@ -13,9 +13,12 @@
 
 Genome1=$1
 Genome2=$2
-outdir$3
+outdir=$3
 
-WorkDir=/projects/temp/${SLURM_JOB_USER}_${SLURM_JOBID}
+
+CurDir=$PWD
+
+WorkDir=$PWD/${SLURM_JOB_USER}_${SLURM_JOBID}
 mkdir -p $WorkDir
 
 cp $Genome1 $WorkDir

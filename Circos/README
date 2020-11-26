@@ -53,8 +53,8 @@ tac $File/Fv_MINion_genome.txt >> $File/Fv_Fv_genome.txt
 #2.) Create synteny links between genomes. 
 
 
-Genome1=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa
-Genome2=../../projects/oldhome/connellj/local_MINion_Fv_genome/WT_albacore_v2_contigs_unmasked.fa
+Genome1=/projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa
+Genome2=/projects/oldhome/connellj/local_MINion_Fv_genome/WT_albacore_v2_contigs_unmasked.fa
 OutDir=/home/connellj/Circos/satsuma_alignment 
 mkdir -p $OutDir
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
@@ -65,7 +65,7 @@ sbatch $ProgDir/satsuma_synteny.sh $Genome1 $Genome2 $OutDir
 # Circos relies on a configuration file which has other branching file involved in the ideogram configuration. 
 
 
-Conf=/home/connellj/git_repos/scripts/Fv_C-variants/Circos/Fv_Fv_circos.conf.sh
+Conf=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos/circos_configuration.sh
 OutDir=/home/connellj/Circos/ideogram
 mkdir -p $OutDir
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos

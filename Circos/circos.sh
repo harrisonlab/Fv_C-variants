@@ -11,9 +11,11 @@
 # Ideogram
 
 Configuration_file=$1
-outdir$2
+outdir=$2
 
-WorkDir=/projects/temp/${SLURM_JOB_USER}_${SLURM_JOBID}
+CurDir=$PWD
+
+WorkDir=$PWD/${SLURM_JOB_USER}_${SLURM_JOBID}
 mkdir -p $WorkDir
 
 cp $Genome1 $WorkDir
@@ -22,11 +24,12 @@ cd $WorkDir
 
 
 circos=/home/connellj/miniconda2/bin/circos
-$circos
-	-conf $Configuration_file \
-	-outputdir $WorkDir
+$circos \
+-conf $Configuration_file \
+-outputdir $WorkDir
 
 
 
 cp $WorkDir/circos.png $outdir
+cp $WorkDir/circos.svg $outdir
 rm -r $WorkDir
