@@ -31,5 +31,5 @@ $circos \
 
 
 cp $WorkDir/circos.png $outdir
-cp $WorkDir/circos.svg $outdir
+#cp $WorkDir/circos.svg $outdir
 rm -r $WorkDir
