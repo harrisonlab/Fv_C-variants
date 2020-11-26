@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-'''
-This program is used to convert fasta files into input format for circos
-'''
+
+#Convert fasta files into format for circos plots 
+
 
 
 #-----------------------------------------------------

@@ -363,8 +363,8 @@ done
 
 
 Reference=../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa 
-for input in ../../projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/WT_contigs_unmasked_temp.vcf; do
-  Outdir=/projects/fusarium_venenatum_miseq/SNP_calling/F.venenatum/SNP_calling_out/corrected_variants
+for input in ../../projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/WT_contigs_unmaskedSNPs_filtered_annotated.vcf; do
+  Outdir=/projects/fusarium_venenatum_miseq/SNP_calling/pileup_calls/recalibrated_variants
   mkdir -p $Outdir 
   ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/SNP_calling_pileup
   sbatch $ProgDir/variant_recalibrate.sh $Reference $input $Outdir
