@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH -J satsumasynteny
-#SBATCH --partition=himem
-#SBATCH --mem-per-cpu=12G
-#SBATCH --cpus-per-task=30
+#SBATCH --partition=short
+#SBATCH --mem-per-cpu=6G
+#SBATCH --cpus-per-task=10
 
 ##########################################################################
 #INPUT:
@@ -25,10 +25,10 @@ cd $WorkDir
 
 SatsumaSynteny=/home/connellj/satsuma-code/SatsumaSynteny
 $SatsumaSynteny \
- 	-t WT_contigs_unmasked.fa \
- 	-q WT_albacore_v2_contigs_unmasked.fa \
- 	-o synteny_output
+ 	-t $Genome1 \
+ 	-q $Genome2 \
+ 	-o synteny_output.txt
 
 
-cp $WorkDir/synteny_output $outdir
+cp $WorkDir/synteny_output.txt $outdir
 rm -r $WorkDir

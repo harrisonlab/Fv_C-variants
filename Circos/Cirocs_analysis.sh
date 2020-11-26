@@ -3,32 +3,35 @@
 
 #1.) Create a .txt file with contig lengths of the genomes to be aligned. 
 #.txt file for genome 1 
+#must be running python v 3.6 or later, update with conda if not. 
 
 
-Genome1=$(ls /home/connellj/local_illumina_Fv_genome/WT_contigs_unmasked.fa)
+Genome1=$(ls ../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa)
 OutDir=/home/connellj/Circos 
 mkdir -p $OutDir
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
-$ProgDir/fasta2circos.py --genome $Genome1 --contig_prefix "A3_5_" > $OutDir/Fv_Illumina_genome.txt
+$ProgDir/python_create_circos_file.py --genome $Genome1 --contig_prefix "A3_5_" > $OutDir/Fv_Illumina_genome.txt
 
 
 #.txt file for genome 2 
 
 
-Genome2=$(ls /home/connellj/local_MINion_Fv_genome/WT_albacore_v2_contigs_unmasked.fa)
+Genome2=$(ls ../../projects/oldhome/connellj/local_MINion_Fv_genome/WT_albacore_v2_contigs_unmasked.fa)
 OutDir=/home/connellj/Circos 
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
-$ProgDir/fasta2circos.py --genome $Fv_MINion_genome --contig_prefix "A3_5_MIN" > $OutDir/Fv_MINion_genome.txt
+$ProgDir/python_create_circos_file.py --genome $Fv_MINion_genome --contig_prefix "A3_5_MIN" > $OutDir/Fv_MINion_genome.txt
 
 
 #concatenate files
 
+File=/home/connellj/Circos
+cat $File/Fv_Illumina_genome.txt > $File/Fv_Fv_genome.txt
+tac $File/Fv_MINion_genome.txt >> $File/Fv_Fv_genome.txt
 
-cat $OutDir/Fv_Illumina_genome.txt > $OutDir/Fv_Fv_genome.txt
-tac $OutDir/Fv_MINion_genome.txt >> $OutDir/Fv_Fv_genome.txt
+
+ #Contigs smaller than 10Kb can be removed if not required. 
 
 
- Contigs smaller than 10Kb can be removed if required. 
   cat $OutDir/Fv_Fv_genome.txt \
   | grep -v -e "A3_5_contig_87" \
   | grep -v -e "A3_5_contig_88" \
