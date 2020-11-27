@@ -64,7 +64,8 @@ sbatch $ProgDir/satsuma_synteny.sh $Genome1 $Genome2 $OutDir
 
 
 #3.) Run circos  
-# Circos relies on a configuration file which has other branching file involved in the ideogram configuration. 
+# Circos relies on a configuration file which has other branching file involved in the ideogram configuration.
+# The 2D plot must like to satsuma_summary_chained_out file from previous step 
 
 
 Conf=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos/circos_configuration.sh

@@ -30,8 +30,8 @@ SatsumaSynteny=/home/connellj/satsuma-code/SatsumaSynteny
 $SatsumaSynteny \
  	-t $Genome1 \
  	-q $Genome2 \
- 	-o synteny_output.txt
+ 	-o $WorkDir
 
 
-cp $WorkDir/synteny_output.txt $outdir
+cp $WorkDir/* $outdir
 rm -r $WorkDir
