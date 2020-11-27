@@ -57,7 +57,7 @@ tac $File/Fv_MINion_genome.txt >> $File/Fv_Fv_genome.txt
 
 Genome1=/projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa
 Genome2=/projects/oldhome/connellj/local_MINion_Fv_genome/WT_albacore_v2_contigs_unmasked.fa
-OutDir=/home/connellj/Circos/satsuma_alignment 
+OutDir=/home/connellj/Circos/satsuma_alignment/test_copy 
 mkdir -p $OutDir
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
 sbatch $ProgDir/satsuma_synteny.sh $Genome1 $Genome2 $OutDir 
@@ -66,7 +66,8 @@ sbatch $ProgDir/satsuma_synteny.sh $Genome1 $Genome2 $OutDir
 #3.) Run circos  
 # Circos relies on a configuration file which has other branching file involved in the ideogram configuration.
 # The 2D plot must like to satsuma_summary_chained_out file from previous step 
-
+# Before running contigs of 2 synteny aligned genomes must have the same contig prefix as set by the first step.  
+# To rename contigs in synteny file using contig prefix use "python_edit_contif_names.py".   
 
 Conf=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos/circos_configuration.sh
 OutDir=/home/connellj/Circos/ideogram

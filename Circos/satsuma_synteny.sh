@@ -33,5 +33,9 @@ $SatsumaSynteny \
  	-o $WorkDir
 
 
-cp $WorkDir/* $outdir
+#cp $WorkDir/* $outdir
+cp $WorkDir/[^$Genome1 $Genome2]* $outdir 
 rm -r $WorkDir
+
+
+
