@@ -1,3 +1,5 @@
+Circos_analysis.sh
+
 #Script to create circos plots. 
 #1.) First create txt files for genomes and concatenate
 #2.) Create synteny links between genomes using satsuma synteny 
