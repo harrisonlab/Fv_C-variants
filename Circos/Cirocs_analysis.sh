@@ -28,7 +28,7 @@ tac $File/Fv_MINion_genome.txt >> $File/Fv_Fv_genome.txt
 
  #Contigs smaller than 10Kb can be removed if not required. 
 
-  cat $OutDir/Fv_Fv_genome.txt \
+  cat $File/Fv_Fv_genome.txt \
   | grep -v -e "A3_5_contig_87" \
   | grep -v -e "A3_5_contig_88" \
   | grep -v -e "A3_5_contig_89" \

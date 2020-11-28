@@ -1,5 +1,3 @@
-Circos_analysis.sh
-
 #Script to create circos plots. 
 #1.) First create txt files for genomes and concatenate
 #2.) Create synteny links between genomes using satsuma synteny 
@@ -30,7 +28,7 @@ tac $File/Fv_MINion_genome.txt >> $File/Fv_Fv_genome.txt
 
  #Contigs smaller than 10Kb can be removed if not required. 
 
-  cat $OutDir/Fv_Fv_genome.txt \
+  cat $File/Fv_Fv_genome.txt \
   | grep -v -e "A3_5_contig_87" \
   | grep -v -e "A3_5_contig_88" \
   | grep -v -e "A3_5_contig_89" \
@@ -67,8 +65,8 @@ sbatch $ProgDir/satsuma_synteny.sh $Genome1 $Genome2 $OutDir
 
 #3.) Run circos  
 # Circos relies on a configuration file which has other branching file involved in the ideogram configuration.
-# The 2D plot must link to satsuma_summary_chained_out file from previous step 
-# Before running step 3, contigs in satsuma_summary_chained_out must have the same contig prefix as set by the first step eg "A3/5_" and "A3/5_MIN" by script satsuma_summary_edited_circos.py
+# The 2D plot must like to satsuma_summary_chained_out file from previous step 
+# Before running contigs in satsume_summary_chained_out must have the same contig prefix as set by the first step eg "A3/5_" and "A3/5_MIN" by script satsuma_summary_edited_circos.py
    
 
 Conf=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos/circos_configuration.sh
