@@ -33,8 +33,7 @@ $SatsumaSynteny \
  	-o $WorkDir
 
 
-#cp $WorkDir/* $outdir
-cp $WorkDir/[^$Genome1 $Genome2]* $outdir 
+cp $WorkDir/satsuma_summary.chained.out $outdir
 rm -r $WorkDir
 
 

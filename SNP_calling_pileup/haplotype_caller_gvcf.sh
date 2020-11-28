@@ -42,6 +42,7 @@ java -jar $picard CreateSequenceDictionary \
 gatk=/scratch/software/GenomeAnalysisTK-3.6
 java -jar $gatk/GenomeAnalysisTK.jar \
      -T HaplotypeCaller \
+     -ploidy 1 \
      -R WT_contigs_unmasked.fa \
      -I "$strain"_recal.bam \
      -o "$strain"_SNP_calls.g.vcf \
