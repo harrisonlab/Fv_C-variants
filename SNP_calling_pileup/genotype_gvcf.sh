@@ -43,10 +43,11 @@ java -jar $gatk/GenomeAnalysisTK.jar \
  	 -V $in_file/C19_SNP_calls.g.vcf \
  	 -o $output	
 
-java -jar $gatk/GenomeAnalysisTK.jar \
-     -T VariantsToAllelicPrimitives \
-     -R $reference \
-     -V $output \
-     -o $output2	 
+# For diploid organism 
+#java -jar $gatk/GenomeAnalysisTK.jar \
+#     -T VariantsToAllelicPrimitives \
+#     -R $reference \
+#     -V $output \
+#     -o $output2	 
 
  

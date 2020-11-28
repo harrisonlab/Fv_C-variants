@@ -47,6 +47,7 @@ java -jar $gatk/GenomeAnalysisTK.jar \
      -I "$strain"_recal.bam \
      -o "$strain"_SNP_calls.g.vcf \
      -ERC GVCF \
+     --allow_potentially_misencoded_quality_scores \
      -variant_index_type LINEAR \
      -variant_index_parameter 128000
 

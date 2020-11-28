@@ -53,7 +53,7 @@ java -jar $gatk/GenomeAnalysisTK.jar \
      -T BaseRecalibrator \
      -R WT_contigs_unmasked.fa \
      -I "$strain"_realigned.bam \
-     -knownSites corrected_snp.bamcd  \
+     -knownSites corrected_snp.bam  \
      -knownSites Fven_svaba_sv.svaba.unfiltered.indel.vcf \
      -knownSites Fven_svaba_sv.svaba.unfiltered.sv.vcf \
      -o "$strain"_recal.table 
