@@ -18,7 +18,7 @@ $ProgDir/python_create_circos_file.py --genome $Genome1 --contig_prefix "A3_5_" 
 Genome2=$(ls ../../projects/oldhome/connellj/local_MINion_Fv_genome/WT_albacore_v2_contigs_unmasked.fa)
 OutDir=/home/connellj/Circos 
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
-$ProgDir/python_create_circos_file.py --genome $Fv_MINion_genome --contig_prefix "A3_5_MIN" > $OutDir/Fv_MINion_genome.txt
+$ProgDir/python_create_circos_file.py --genome $Fv_MINion_genome --contig_prefix "A3_5_MIN_" > $OutDir/Fv_MINion_genome.txt
 
 #concatenate files
 
@@ -67,7 +67,7 @@ sbatch $ProgDir/satsuma_synteny.sh $Genome1 $Genome2 $OutDir
 # Circos relies on a configuration file which has other branching file involved in the ideogram configuration.
 # The 2D plot must like to satsuma_summary_chained_out file from previous step 
 # Before running contigs in satsume_summary_chained_out must have the same contig prefix as set by the first step eg "A3/5_" and "A3/5_MIN" by script satsuma_summary_edited_circos.py
-   
+# There is a python script you can use to change the contig prefix in /home/connellj/git_repos/emr_repos/Fv_C-variants/Circos/Python_edit_contig_names.py -- run command line in python    
 
 Conf=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos/circos_configuration.sh
 OutDir=/home/connellj/Circos/ideogram
