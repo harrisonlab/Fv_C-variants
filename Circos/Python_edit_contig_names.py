@@ -1,20 +1,21 @@
-# Edit the names of colums in satsuma synteny file
 #!/usr/bin/python
 
-
-#1.) Change input_file_name to the location of satsuma_summary_chained_out + file name 
-#2.) Chnge output_file_name to a any location + any file name you like but not the same file name as input
-#3.) Chnage contig nammes to be replaced 
-#3.) Run command line by opening python 
+import argparse
 
 
-input_file_location = "/home/connellj/Circos/satsuma_alignment/test_copy/satsuma_summary.chained.out"
-output_file_name = "/home/connellj/Circos/satsuma_alignment/test_copy/satsuma_summary_editedforcircos.chained.out"
+ap = argparse.ArgumentParser()
+ap.add_argument('--synteny',required=True,type=str,help='The genome assembly')
+ap.add_argument('--outfile',required=True,type=str,help='output')
 
-file_in = open (input_file_location, "r")
-file_out = open (output_file_name, "w")
+file = ap.parse_args()
+
+
+file_in = open (file.synteny, "r")
+file_out = open (file.outfile, "w")
+
 
 line = file_in.readlines()
+
 
 for element in line:
   element = element.split ("\t")
@@ -30,8 +31,10 @@ for element in line:
   file_out.write (out_line)
   file_out.write ("\n")
 
+
 file_out.close()
 file_in.close ()
+
 
 
  
