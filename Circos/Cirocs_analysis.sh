@@ -69,8 +69,10 @@ sbatch $ProgDir/satsuma_synteny.sh $Genome1 $Genome2 $OutDir
 
 Synteny_file=/home/connellj/Circos/satsuma_alignment/test_copy/satsuma_summary.chained.out            #Synteny file location and file name here  
 OutDir=/home/connellj/Circos/satsuma_alignment/test_copy/satsuma_summary_editedforcircos.chained.out  #Outfile location and file name here 
-ProgDir=/home/connellj
-$ProgDir/sub_python.py --synteny $Synteny_file --outfile $OutDir
+pre1=A3_5_contig_  #change to your contig prefox
+pre2=A3_5_MIN_contig_  #change to your contig prefix
+ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
+$ProgDir/Python_edit_contig_names.py --synteny $Synteny_file --contig_prefix_1 $pre1 --contig_prefix_2 $pre2 --outfile $OutDir
 
 
 #3.) Run circos
