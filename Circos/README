@@ -65,6 +65,7 @@ sbatch $ProgDir/satsuma_synteny.sh $Genome1 $Genome2 $OutDir
 
 
 #3.) Edit contig prefix to match step 1, this is required as contig prefix must remain uniform.
+#This script assumes your contigs are called "contig_". Change pre1 and pre2 to new contig prefix idetifier
 
 
 Synteny_file=/home/connellj/Circos/satsuma_alignment/test_copy/satsuma_summary.chained.out            #Synteny file location and file name here  
