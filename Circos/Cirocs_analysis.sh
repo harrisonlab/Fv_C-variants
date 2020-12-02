@@ -7,7 +7,7 @@
 #1.) Create a .txt file with contig lengths of the genomes to be aligned. 
 #.txt file for genome 1 
  
-Genome1=$(ls ../../projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa)
+Genome1=/projects/fusarium_venenatum_miseq/genomes/WT/WT_contigs_unmasked.fa
 OutDir=/home/connellj/Circos 
 mkdir -p $OutDir
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
@@ -15,10 +15,10 @@ $ProgDir/python_create_circos_file.py --genome $Genome1 --contig_prefix "A3_5_" 
 
 #.txt file for genome 2 
 
-Genome2=$(ls ../../projects/oldhome/connellj/local_MINion_Fv_genome/WT_albacore_v2_contigs_unmasked.fa)
+Genome2=/projects/oldhome/connellj/local_MINion_Fv_genome/WT_albacore_v2_contigs_unmasked.fa
 OutDir=/home/connellj/Circos 
 ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
-$ProgDir/python_create_circos_file.py --genome $Fv_MINion_genome --contig_prefix "A3_5_MIN_" > $OutDir/Fv_MINion_genome.txt
+$ProgDir/python_create_circos_file.py --genome $Genome2 --contig_prefix "A3_5_MIN_" > $OutDir/Fv_MINion_genome.txt
 
 #concatenate files
 
@@ -77,7 +77,7 @@ $ProgDir/Python_edit_contig_names.py --synteny $Synteny_file --contig_prefix_1 $
 
 
 #3.) Run circos
-# Circos relies on a configuration file which has other branching files involved in the ideogram configuration.
+# Circos relies on a configuration file which has other branching files involved in the ideogram configuration, and must be setup for each run.
 # The 2D plot must link to satsuma_summary_chained_out file from previous step 
 
 
