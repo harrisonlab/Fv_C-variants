@@ -32,8 +32,6 @@ query=$Genome1
 target=$Genome2
 
 minimap2=/home/connellj/miniconda2/bin/minimap2
-query=$Genome1
-target=$Genome2
 
 
 $minimap2 -x asm5 -t 36 $target $query > minimap.paf
