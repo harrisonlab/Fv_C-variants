@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH -J minimap
+#SBATCH -J dotplot
 #SBATCH --partition=short
 #SBATCH --mem-per-cpu=12G
 #SBATCH --cpus-per-task=30
