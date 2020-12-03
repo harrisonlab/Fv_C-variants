@@ -28,15 +28,15 @@ cd $WorkDir
 
 dotplot=/home/connellj/git_repos/emr_repos/Fv_C-variants/Dotplot_analysis/
 $dotplot/pafCoordsDotPlotly.R \
-	-i $paf \
-	-o paf.plot \
-	-m 2000 \
-	-q 50000 \
-	-k 10 \
-	-s -t -i -p 12
+-i $paf \
+-o paf_plot \
+-m 2000 \
+-q 50000 \
+-k 10 \
+-s -t -l -p 12
 
 
 
 
-cp $WorkDir/paf.plot $outdir
+cp $WorkDir/paf_plot.png $outdir
 rm -r $WorkDir

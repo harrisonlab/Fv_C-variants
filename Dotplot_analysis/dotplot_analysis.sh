@@ -12,7 +12,7 @@ sbatch $Progdir/minimap.sh $Genome1 $Genome2 $Outdir
 
 
 #Create the dot plot 
-paf_file=/projects/fusarium_venenatum_miseq/genome_synteny/minimap.paf
+paf_file=/projects/fusarium_venenatum_miseq/genome_synteny/minimap.paf;
 Outdir=/projects/fusarium_venenatum_miseq/genome_synteny/
 Progdir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Dotplot_analysis/
 sbatch $Progdir/create_dotplot.sh $paf_file $Outdir
