@@ -118,6 +118,21 @@ done
 
 -------------------------------------------------------------------Kmer counting-------------------------------------------------------------------------------
 
+
+for TrimPath in $(ls -d /projects/fusarium_venenatum_miseq/genomes); do
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/genome_assembly/
+    TrimF1=$(ls $TrimPath/C9/F/c9_S1_L001_R1_001_trim.fq.gz)
+    TrimR1=$(ls $TrimPath/C9/R/c9_S1_L001_R2_001_trim.fq.gz)
+    echo $TrimF1
+    echo $TrimR1
+    TrimF2=$(ls $TrimPath/C15/F/c15_S3_L001_R1_001_trim.fq.gz)
+    TrimR2=$(ls $TrimPath/C15/R/c15_S3_L001_R2_001_trim.fq.gz)
+    echo $TrimF2
+    echo $TrimR2
+    sbatch $ProgDir/kmc_kmer_counting.sh $TrimF1 $TrimR1 $TrimF2 $TrimR2
+  done
+
+
 kmer counting was performed using kmc This allowed estimation of sequencing depth and total genome size
 
 for TrimPath in $(ls -d qc_dna/paired/fusarium_venenatum/c-varient); do
@@ -308,6 +323,16 @@ Busco was run to check gene space in assemblies
     BuscoDB=$(ls -d /home/groups/harrisonlab/dbBusco/sordariomyceta_odb9)
     OutDir=gene_pred/busco/$Organism/$Strain/assembly
     qsub $ProgDir/sub_busco3.sh $Assembly $BuscoDB $OutDir
+  done
+
+   for Assembly in $(ls /projects/fusarium_venenatum_miseq/genome_assemblys/C9/C9_contigs_unmasked.fa); do
+    Strain=$(echo $Assembly| rev | cut -d '/' -f1 | rev)
+    Organism=$(echo $Assembly | rev | cut -d '/' -f4 | rev)
+    echo "$Organism - $Strain"
+    ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/genome_assembly
+    BuscoDB=$(ls -d /projects/oldhome/groups/harrisonlab/dbBusco/sordariomyceta_odb9)
+    OutDir=/projects/fusarium_venenatum_miseq/genome_assembly/C9
+    sbatch $ProgDir/busco.sh $Assembly $BuscoDB $OutDir
   done
 
 
