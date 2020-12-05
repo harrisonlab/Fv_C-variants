@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -J Circos
-#SBATCH --partition=short
+#SBATCH --partition=himem
 #SBATCH --mem-per-cpu=6G
 #SBATCH --cpus-per-task=10
 
@@ -18,8 +18,6 @@ CurDir=$PWD
 WorkDir=$PWD/${SLURM_JOB_USER}_${SLURM_JOBID}
 mkdir -p $WorkDir
 
-cp $Genome1 $WorkDir
-cp $Genome2 $WorkDir
 cd $WorkDir
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -J busco
-#SBATCH --partition=long
+#SBATCH --partition=short
 #SBATCH --mem-per-cpu=6G
 #SBATCH --cpus-per-task=20
 
@@ -31,19 +31,22 @@ WorkDir=$PWD/${SLURM_JOB_USER}_${SLURM_JOBID}
 
 mkdir -p $WorkDir
 cp $Assembly $WorkDir
-cp -r $DatabaseOpt	$WorkDir	
+cp -r $DatabaseOpt $WorkDir	
 cd $WorkDir
 
 
-busco=/home/connellj/miniconda2/bin/busco
+busco=/home/connellj/miniconda2/bin/BUSCO.py
 $busco \
  -i $Assembly \
  -l $DatabaseOpt \
  -m genome \
  -c 8 \
- --augustus_species fusarium_venenatum \
+ --species fusarium_graminearum \
  -o Busco_result 
 
 
 cp $WorkDir/Busco_result $OutDir
 rm -r $WorkDir
+
+
+
