@@ -26,7 +26,7 @@
 
 # Chromosome name, size and color definition
 
-karyotype = /home/connellj/Fv_Fv_genome_edited.txt
+karyotype = /projects/fusarium_venenatum_miseq/comparing_refs/Fv_Fv_genome_edited.txt
 
 
 
@@ -235,5 +235,5 @@ chromosomes_color = A3_5_contig_18=red,A3_5_contig_30=red,A3_5_contig_44=red,A3_
 
 # Include a 2D plot
 
-<<include /home/connellj/Circos/old/Fv_Fv_kim_illumina_2D_plot.conf.sh>>
+<<include /home/connellj/git_repos/emr_repos/Fv_C-variants/Circos/Comparing_refs/kim_ven_genome/2D_plot.conf.sh>>
 
