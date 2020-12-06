@@ -30,7 +30,7 @@
 
 
 
-   file = /projects/fusarium_venenatum_miseq/comparing_refs/vs_kim_geno/satsuma_summary_out
+   file = /projects/fusarium_venenatum_miseq/comparing_refs/jgi_ven_geno/satsuma_summary.out
 
 </links>
 
