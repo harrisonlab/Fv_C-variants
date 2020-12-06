@@ -10,7 +10,7 @@
 # 1st argument: Genome1
 # 2nd argument: Genome2    
 #OUTPUT:
-# 
+#check slurm out file for quick stats on variants detected and genome similiary ANI%, outfiles are variants and corresponding data 
 
 
 Genome1=$1
