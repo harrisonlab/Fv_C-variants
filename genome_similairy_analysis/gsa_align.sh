@@ -19,7 +19,9 @@ prefix=$3
 Outdir=$4
 
 
-WorkDir=/projects/fusarium_venenatum_miseq/${SLURM_JOB_USER}_${SLURM_JOBID}
+CurDir=$PWD
+
+WorkDir=$PWD/${SLURM_JOB_USER}_${SLURM_JOBID}
 mkdir -p $WorkDir
 
 
