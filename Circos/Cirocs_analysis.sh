@@ -88,4 +88,18 @@ ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
 sbatch $ProgDir/circos.sh $Conf $OutDir
 
 
+# change the colours of the synteny link file with 
 
+
+syntenty_link_file=/home/connellj/Circos/satsuma_alignment/satsuma_summary_editedforcircos.chained.out
+OutDir=/home/connellj/Circos/satsuma_alignment/satsuma_summary_editedforcircos.chained.out_colour
+awk '{print $0, "\tcolour=red"}' $syntenty_link_file > $OutDir
+
+
+Synteny_file=/home/connellj/Circos/satsuma_alignment/satsuma_summary_editedforcircos.chained.out_colour           
+OutDir=/home/connellj/Circos/satsuma_alignment/satsuma_summary_editedforcircos.chained.out_colours  
+contig_name=A3_5_contig_1  
+existing_colour=red
+new_colour=blue
+ProgDir=/home/connellj/git_repos/emr_repos/Fv_C-variants/Circos
+$ProgDir/python_change_synteny_colour.py --synteny $Synteny_file --contig_name $contig_name --existing_colour $existing_colour --new_colour $new_colour --outfile $OutDir
