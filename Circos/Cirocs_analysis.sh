@@ -93,7 +93,7 @@ sbatch $ProgDir/circos.sh $Conf $OutDir
 
 syntenty_link_file=/home/connellj/Circos/satsuma_alignment/satsuma_summary_editedforcircos.chained.out
 OutDir=/home/connellj/Circos/satsuma_alignment/satsuma_summary_editedforcircos.chained.out_colour
-awk '{print $0, "\tcolour=red"}' $syntenty_link_file > $OutDir
+awk '{print $0, "\tcolor=red"}' $syntenty_link_file > $OutDir
 
 
 Synteny_file=/home/connellj/Circos/satsuma_alignment/satsuma_summary_editedforcircos.chained.out_colour           

@@ -26,7 +26,7 @@ line = file_in.readlines()
 for element in line:
   element = element.split ("\t")
   if name == element [0]:
-    element [6] = element [6].replace("colour=" + col1, "colour=" + col2)
+    element [6] = element [6].replace("color=" + col1, "color=" + col2)
   else:
     pass 
   data = [element [0], element [1], element [2], element [3], element [4], element [5], element [6]]
